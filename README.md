@@ -15,19 +15,19 @@ The anonymization scripts are based off the [DICOM-PS3.15E-Basic](http://dicom.n
 First ensure you have the [Oracle JDK v.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed. 
 
 Create a clone of this repository on your workstation:
-```bash
+```
 git clone --recurse-submodules https://github.com/susom/mirc-ctp.git
 ```
 
 If you do not have the `ant` program installed, install it with [HomeBrew](https://brew.sh/) (which will need to be installed if you haven't done so already)
 
-```bash
+```
 $ brew install ant
 ```
 
 Compile the included DicomAnonymizerTool by typing `ant` at the command prompt:
 
-```bash
+```
 $ ant
 Buildfile: /Users/jdoe/Projects/mirc-ctp/build.xml
 
@@ -43,7 +43,7 @@ init:
 
 You should now have a directory called `DAT` which contains the `DicomAnonymizerTool`. You can try running it: 
 
-```bash
+```
 $ java -jar DAT/DAT.jar
 Usage: java -jar DAT {parameters}
 where:
@@ -55,7 +55,7 @@ where:
 
 You can now place some test DICOM studies in the directory `DICOM` and run the shell script which will anonymize the studies (all to the same anonymous MRN and Accession Number) and place them in `DICOM-ANON`
 
-```bash
+```
 $ ./anonymize.sh
 ----
 Thread: pool-1-thread-1: Anonymizing DICOM/1.2.840.4267.32.293501795892579834759834759834759834
