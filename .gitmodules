@@ -1,0 +1,3 @@
+[submodule "DicomAnonymizerTool"]
+	path = DicomAnonymizerTool
+	url = https://github.com/johnperry/DicomAnonymizerTool

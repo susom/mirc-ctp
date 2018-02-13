@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+
+<project name="DicomAnonymizerTool" basedir="." default="all">
+	<property name="toolbasedir" value="DicomAnonymizerTool" />
+
+	<property name="build" value="${toolbasedir}/build"/>
+	<property name="products" value="DAT"/>
+	<property name="libraries" value="${toolbasedir}/libraries"/>
+	<property name="documentation" value="${toolbasedir}/documentation"/>
+
+	<property name="toolsource" value="${toolbasedir}/source"/>
+
+	<property name="java" value="${toolsource}/java"/>
+	<property name="files" value="${toolsource}/files"/>
+	<property name="installer" value="org/rsna/installer"/>
+	<property name="dicomanonymizertool" value="org/rsna/dicomanonymizertool"/>
+
+	<property name="ctp" value="/Development/CTP"/>
+
+	<property name="title" value="DicomAnonymizerTool"/>
+	<property name="copyright" value="Copyright 2017 Radiological Society of North America"/>
+
+	<path id="classpath">
+		<pathelement location="${libraries}/dcm4che.jar"/>
+		<pathelement location="${libraries}/log4j.jar"/>
+		<pathelement location="${libraries}/CTP.jar"/>
+		<pathelement location="${libraries}/util.jar"/>
+	</path>
+
+	<target name="init">
+		<tstamp>
+			<format property="today" pattern="yyyy.MM.dd"/>
+			<format property="now" pattern="HH:mm:ss z"/>
+		</tstamp>
+		<echo message="Time now ${now}"/>
+		<echo message="ant.java.version = ${ant.java.version}" />
+		<mkdir dir="${build}"/>
+		<mkdir dir="${products}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}" failonerror="false"/>
+		<delete dir="${documentation}" failonerror="false"/>
+	</target>
+
+	<target name="getLibraryJars">
+		<copy overwrite="true" todir="${libraries}">
+			<fileset dir="${ctp}/libraries">
+				<include name="CTP.jar"/>
+				<include name="dcm4che.jar"/>
+				<include name="log4j.jar"/>
+				<include name="util.jar"/>
+				<include name="pixelmed_codec.jar"/>
+				<include name="dcm4che-imageio-rle-2.0.25.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dicomanonymizertool" depends="init, getLibraryJars">
+
+		<javac srcdir="${java}" destdir="${build}" optimize="on"
+			classpathref="classpath"
+			includeantruntime="false"
+			debug="true" debuglevel="lines,vars,source"/>
+
+		<jar destfile="${products}/DAT.jar">
+			<manifest>
+				<attribute name="Main-Class" value="org.rsna.dicomanonymizertool.DicomAnonymizerTool"/>
+				<attribute name="Class-Path" value="dcm4che.jar log4j.jar CTP.jar util.jar pixelmed_codec.jar dcm4che-imageio-rle-2.0.25.jar"/>
+			</manifest>
+			<fileset dir="${build}"
+				excludes="${dicomanonymizertool}/Installer**"/>
+		</jar>
+
+		<mkdir dir="${build}/DicomAnonymizerTool"/>
+
+		<copy overwrite="true" todir="${products}">
+			<fileset dir="${libraries}" includes="*.*"/>
+		</copy>
+
+	</target>
+
+	<target name="javadocs">
+		<mkdir dir="${documentation}"/>
+		<javadoc destdir="${documentation}" sourcepath="${java}" classpathref="classpath"
+			doctitle="${title}" windowtitle="${title}" bottom="${copyright}">
+			<package name="*"/>
+		</javadoc>
+	</target>
+
+	<target name="all" depends="clean, dicomanonymizertool, javadocs"/>
+
+</project>

@@ -1,0 +1,1 @@
+!(ImageType.contains("SECONDARY") + ImageType.contains("DERIVED"))
