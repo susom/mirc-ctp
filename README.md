@@ -56,7 +56,7 @@ where:
 You can now place some test DICOM studies in the directory `DICOM` and run the shell script which will anonymize the studies (all to the same anonymous MRN and Accession Number) and place them in `DICOM-ANON`
 
 ```bash
-$ ./anonymize.sh DICOM DICOM-ANON
+$ ./anonymize.sh
 ----
 Thread: pool-1-thread-1: Anonymizing DICOM/1.2.840.4267.32.293501795892579834759834759834759834
    Anonymized file: DICOM-ANON/1.2.840.4267.32.10027221686667529588514012002002498656
