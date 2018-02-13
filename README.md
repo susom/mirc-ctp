@@ -12,7 +12,7 @@ The anonymization scripts are based off the [DICOM-PS3.15E-Basic](http://dicom.n
 
 ### Installation (MacOS)
 
-First ensure you have the [Oracle JRE/JDK v.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed. 
+First ensure you have the [Oracle JDK v.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed. 
 
 Create a clone of this repository on your workstation:
 ```bash
