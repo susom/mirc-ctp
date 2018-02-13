@@ -2,6 +2,8 @@
 
 ##
 ##  Example anonymization script. 
+##  Place DICOM with PHI in the 'DICOM' directory
+##  and it will write anonymized DICOM to 'DICOM-ANON'
 ## 
 
 # The new, anonymous patient ID:
@@ -13,16 +15,9 @@ ACCESSION="ACN1234"
 # Anonymize dates by subtracting or adding this value, in days:
 JITTER="-10"
 
-if [ "$#" -ne 2 ]; then
-	echo "Usage: $0 <SOURCE> <DESTINATION>"
-	echo "	<SOURCE>	: A directory containing dicom instances to anonymize"
-	echo "	<DESTINATION>	: Destination for the de-identified instances"
-	exit 1
-fi
-
 java -jar DAT/DAT.jar -n 4 \
-	-in $1 \
-	-out $2 \
+	-in DICOM \
+	-out DICOM-ANON \
 	-f stanford-filter.script \
 	-da stanford-anonymizer.script \
 	-pPATIENTID "$PATIENTID" \
