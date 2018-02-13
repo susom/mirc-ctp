@@ -53,7 +53,7 @@ where:
 ...
 ```
 
-You can now place some test DICOM studies in the directory `DICOM` and run the shell script which will anonymize the studies (to the same anonymous MRN and Accession Number) and place them in `DICOM-ANON`
+You can now place some test DICOM studies in the directory `DICOM` and run the shell script which will anonymize the studies (all to the same anonymous MRN and Accession Number) and place them in `DICOM-ANON`
 
 ```bash
 $ ./anonymize.sh DICOM DICOM-ANON
