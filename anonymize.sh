@@ -20,6 +20,7 @@ java -jar DAT/DAT.jar -n 4 \
 	-out DICOM-ANON \
 	-f stanford-filter.script \
 	-da stanford-anonymizer.script \
+	-dpa pixel-scrubber.script \
 	-pPATIENTID "$PATIENTID" \
 	-pJITTER "$JITTER" \
-	-pACCESSION "$ACCESSION" \ 
+	-pACCESSION "$ACCESSION" 

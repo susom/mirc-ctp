@@ -169,7 +169,7 @@
  <e en="F" t="00120060" n="CoordinatingCenterName"></e>
  <e en="T" t="00120062" n="PatientIdentityRemoved">@always()YES</e>
  <e en="T" t="00120063" n="DeIdentificationMethod">@append(){CTP: @param(@PROFILENAME): @date():@time()}</e>
- <e en="F" t="00120064" n="DeIdentificationMethodCodeSeq"></e>
+ <e en="F" t="00120064" n="DeIdentificationMethodCodeSeq">113100/113105/113107/113108/113109</e>
  <e en="T" t="00130010" n="BlockOwner">CTP</e>
  <e en="T" t="00180010" n="ContrastBolusAgent">@empty()</e>
  <e en="F" t="00180012" n="ContrastBolusAgentSeq"></e>
