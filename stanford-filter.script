@@ -7,4 +7,5 @@
 + MediaStorageSOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7")
 + MediaStorageSOPClassUID.contains("1.2.840.10008.5.1.4.1.1.7.")
 + Modality.equals("PR")
++ SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.11.1") // GSPS PS
 )
