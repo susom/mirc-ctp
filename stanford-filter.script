@@ -1,10 +1,10 @@
-
 // Ignore all image types that are derived or secondary, including secondary SOP class UID
 !(
-  ImageType.contains("SECONDARY") 
-+ ImageType.contains("DERIVED") 
+  ImageType.containsIgnoreCase("SECONDARY")
++ ImageType.containsIgnoreCase("DERIVED")
 + SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7")
 + SOPClassUID.contains("1.2.840.10008.5.1.4.1.1.7.")
 + MediaStorageSOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7")
 + MediaStorageSOPClassUID.contains("1.2.840.10008.5.1.4.1.1.7.")
++ Modality.equals("PR")
 )
