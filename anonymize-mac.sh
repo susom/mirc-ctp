@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##
-##  Example anonymization script. 
+##  Example anonymization script for Mac which uses Docker for native ImageIO
 ##  Place DICOM with PHI in the 'DICOM' directory
 ##  and it will write anonymized DICOM to 'DICOM-ANON'
 ## 
@@ -15,23 +15,17 @@ ACCESSION="ACN1234"
 # Anonymize dates by subtracting or adding this value, in days:
 JITTER="-10"
 
-PLATFORM=`uname`
-if [[ "$PLATFORM" == 'Darwin' ]]; then
-	echo "Warning: MacOS supports a limited subset of DICOM transfer syntaxes due to lack of native Java ImageIO."
-	echo "Pixel scrubbing will skip unsupported formats such as JPEG Lossless"
-fi
-
 # Helpful for debugging why pixel scrubbing is failing
 #java -Dlog4j.configuration=file:log4j.xml -jar DAT/DAT.jar -n 4 \
 
-java -jar DAT/DAT.jar -n 4 \
-	-in DICOM \
-	-out DICOM-ANON \
+docker run -v `pwd`:/tmp mirc-ctp -v -n 4 \
+	-in /tmp/DICOM \
+	-out /tmp/DICOM-ANON \
 	-dec \
 	-rec \
-	-f stanford-filter.script \
-	-da stanford-anonymizer.script \
-	-dpa stanford-scrubber.script \
+	-f /tmp/stanford-filter.script \
+	-da /tmp/stanford-anonymizer.script \
+	-dpa /tmp/stanford-scrubber.script \
 	-pPATIENTID "$PATIENTID" \
 	-pJITTER "$JITTER" \
 	-pACCESSION "$ACCESSION" 

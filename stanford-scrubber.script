@@ -256,3 +256,27 @@ MEDRAD Injection Profile
     [0028,0010].equals("1077") *
     [0028,0011].equals("750") }
   (0,0,750,230)
+
+*******************************************************
+* Stanford additions MIRC-CTP pixel scrubbing scripts *
+*******************************************************
+
+**************
+   CR / DR
+**************
+
+Canon
+  { [0008,0070].containsIgnoreCase("Canon") *
+    [0008,1090].containsIgnoreCase("CXDI") *
+    [0018,1020].containsIgnoreCase("V4") *
+    [0028,0010].containsIgnoreCase("2672") *
+    [0028,0011].containsIgnoreCase("2200") }
+  (0,0,2200,64) 
+
+  { [0008,0070].containsIgnoreCase("Canon") *
+    [0008,1090].containsIgnoreCase("CXDI") *
+    [0018,1020].containsIgnoreCase("V6") *
+    [0028,0010].containsIgnoreCase("2288") *
+    [0028,0011].containsIgnoreCase("2448") }
+  (0,0,2448,36)
+
