@@ -74,7 +74,7 @@ You can now open the DICOM files in `DICOM-ANON` to make sure they work with you
 
 You may want to look at the contents of `anonymize.sh` to understand how the MIRC-CTP application is invoked.
 
-**A note about pixel scrubbing and MacOS**
+###A note about pixel scrubbing and MacOS
 
 In order to read DICOM encoded with the JPEG Lossless syntax, you need to have the Java Advanced Imaging ImageIO libraries.
 Unfortunately, these are not available for Mac. To get around this limitation, you can run this application
