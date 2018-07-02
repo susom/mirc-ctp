@@ -9,6 +9,7 @@ Included in this project is the MIRC-CTP command-line [DicomAnonymizerTool](http
 ### DICOM anonymization scripts ###
 * `stanford-anonymizer.script`: This file specifies which DICOM tags should be modified or removed. 
 * `stanford-filter.script`: This file specifies which DICOM instances should be removed. Currently includes image types known to have pixel data with PHI, for example secondary derived screens (screenshots). 
+* `stanford-scrubber.script`: MIRC-CTP standard pixel scrubbing definitions with additional rules added by Stanford.
 
 The anonymization scripts are based off the [DICOM-PS3.15E-Basic](http://dicom.nema.org/dicom/2013/output/chtml/part15/PS3.15.html) profile with additional rules for tags known to contain PHI. All vendor-specific (eg. odd-numbered) tags are also removed.
 
@@ -72,3 +73,14 @@ Elapsed time: 0.634
 You can now open the DICOM files in `DICOM-ANON` to make sure they work with your intended application.
 
 You may want to look at the contents of `anonymize.sh` to understand how the MIRC-CTP application is invoked.
+
+**A note about pixel scrubbing and MacOS**
+
+In order to read DICOM encoded with the JPEG Lossless syntax, you need to have the Java Advanced Imaging ImageIO libraries.
+Unfortunately, these are not available for Mac. To get around this limitation, you can run this application
+from within a Docker container. A Dockerfile is included in this distribution, to create the image run:
+
+`docker build -f Dockerfile --pull -t mirc-ctp .` 
+ 
+You can then use the `anonymize-mac.sh` script instead of `anonymize.sh` to anonymize DICOM directories with support
+for these image formats. 
