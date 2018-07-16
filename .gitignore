@@ -1,23 +1,61 @@
-# Compiled class file
-*.class
+# Common build output from Maven, Ant, IntelliJ, Eclipse
+/target/
+/build/
+/out/
+/classes/
+/dependency-reduced-pom.xml
 
-# Log file
-*.log
+# Local configuration for development purposes
+/conf/
+local.*
+*.local.*
 
-# BlueJ files
-*.ctxt
+# IDE project files for IntelliJ - it tends to generate lots of files depending
+# on your exact version, which plugins are installed, etc., so ignore everything
+# except for a vetted list of things we want. In particular, we want code
+# formatting style (which needs to match the checkstyle Maven configuration).
+/.idea/*
+!/.idea/codeStyleSettings.xml
+!/.idea/dataSources.ids
+!/.idea/dataSources.xml
+!/.idea/vcs.xml
+!/.idea/compiler.xml
+!/.idea/encodings.xml
+!/.idea/modules.xml
+!/.idea/copyright/
+!/.idea/inspectionProfiles/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Eclipse project files
+.settings/
+.classpath
+.project
 
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# VSCode project files
+/.vscode/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Working directories for development
+/.hsql/
+/.vagrant/
+/.vertx/
+/file-uploads/
 
+# Don't want any encryption keys in version control
+*.jks
+*.jceks
+*.pkcs12
+*.pk12
+*.pem
+*.pfx
+
+# Operating system garbage
+.DS_Store
+[Tt]humbs.db
+
+# Git artifacts
+*.orig
+
+# Just in case you put this in Subversion
+.svn/
+
+# Emacs backup files
+*~

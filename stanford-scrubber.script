@@ -257,26 +257,77 @@ MEDRAD Injection Profile
     [0028,0011].equals("750") }
   (0,0,750,230)
 
-*******************************************************
-* Stanford additions MIRC-CTP pixel scrubbing scripts *
-*******************************************************
+**********************
+* Stanford additions *
+**********************
 
 **************
-   CR / DR
+   CR / DX
 **************
 
 Canon
-  { [0008,0070].containsIgnoreCase("Canon") *
-    [0008,1090].containsIgnoreCase("CXDI") *
-    [0018,1020].containsIgnoreCase("V4") *
-    [0028,0010].containsIgnoreCase("2672") *
-    [0028,0011].containsIgnoreCase("2200") }
-  (0,0,2200,64) 
+  { (Modality.equals("CR") + Modality.equals("DX")) * 
+    Manufacturer.containsIgnoreCase("Canon") *
+    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+    ([0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("2.")) }
+  (0,0,10000,104) 
 
-  { [0008,0070].containsIgnoreCase("Canon") *
-    [0008,1090].containsIgnoreCase("CXDI") *
-    [0018,1020].containsIgnoreCase("V6") *
-    [0028,0010].containsIgnoreCase("2288") *
-    [0028,0011].containsIgnoreCase("2448") }
-  (0,0,2448,36)
+  { Modality.equals("CR") * 
+    Manufacturer.containsIgnoreCase("Canon") *
+    ManufacturerModelName.startsWithIgnoreCase("AXIOM") *
+    [0018,1020].startsWithIgnoreCase("V6") }
+  (0,0,10000,115)
+
+KONICA
+
+  { Modality.equals("CR") * 
+    Manufacturer.containsIgnoreCase("KONICA") *
+    ManufacturerModelName.containsIgnoreCase("0402") *
+    [0018,1020].startsWithIgnoreCase("6.") *
+    Rows.equals("2446") * Columns.equals("2446") }
+  (0,2308,2446,137)
+
+  { Modality.equals("CR") * 
+    Manufacturer.containsIgnoreCase("KONICA") *
+    ManufacturerModelName.containsIgnoreCase("0402") *
+    [0018,1020].startsWithIgnoreCase("2.") *
+    Rows.equals("2010") * Columns.equals("2446") }
+  (0,0,2446,115)
+  
+MEDICATECHUSA
+These scans contain PHI at the upper-left, and provider at bottom.
+NOTE: The provider information is not removed, since the height of the image is variable.
+
+  { (Modality.equals("CR") + Modality.equals("DX")) * 
+    Manufacturer.startsWithIgnoreCase("Medicatechusa") *
+    ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") *
+    [0018,1020].startsWithIgnoreCase("1.") } 
+  (0,0,10000,70)
+
+SHIMADZU
+
+  { Modality.equals("CR") * 
+    Manufacturer.startsWithIgnoreCase("Shimadzu") *
+    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+    [0018,1020].startsWithIgnoreCase("2.") }
+  (0,0,10000,90)
+
+Cuattro, LLC
+
+  { Modality.equals("DX") * 
+    Manufacturer.startsWithIgnoreCase("Cuattro") *
+    ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
+    [0018,1020].startsWithIgnoreCase("3.")  *
+    Rows.equals("3072") * Columns.equals("3072") }
+  (2500,0,572,400)
+
+Medlink Imaging 
+
+  { Modality.equals("DX") * 
+    Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
+    ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
+    [0018,1020].startsWithIgnoreCase("1.") *
+    Rows.equals("2922") * Columns.equals("1936") }
+  (0,0,1936,50)
+
 

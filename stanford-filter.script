@@ -1,12 +1,123 @@
-// Ignore all image types that are derived or secondary, including secondary SOP class UID
-!(
-  ImageType.containsIgnoreCase("SECONDARY")
-+ ImageType.containsIgnoreCase("DERIVED")
-+ ManufacturersModelName.containsIgnoreCase("PACSSCAN")
-+ SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7")
-+ SOPClassUID.contains("1.2.840.10008.5.1.4.1.1.7.")
-+ MediaStorageSOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7")
-+ MediaStorageSOPClassUID.contains("1.2.840.10008.5.1.4.1.1.7.")
-+ Modality.equals("PR")
-+ SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.11.1") // GSPS PS
-)
+//
+// Stanford Research IT MIRC-CTP filtering script
+// This script allows known pixel PHI, so always use the included pixel scrubbing script.
+// 
+
+// Images with explicit scrubbing rules are passed through the filter
+(
+  
+  // KONICA CR (SCRUBBED) (ORIGINAL\PRIMARY)
+  ((Modality.equals("CR") * 
+      Manufacturer.containsIgnoreCase("KONICA") *
+      ManufacturerModelName.containsIgnoreCase("0402") *
+      [0018,1020].startsWithIgnoreCase("6.") *
+      Rows.equals("2446") * Columns.equals("2446"))
+    +
+    (Modality.equals("CR") * 
+      Manufacturer.containsIgnoreCase("KONICA") *
+      ManufacturerModelName.containsIgnoreCase("0402") *
+      [0018,1020].startsWithIgnoreCase("2.") *
+      Rows.equals("2010") * Columns.equals("2446"))
+  )
+
+  // Medicatechusa (SCRUBBED)
+  +((Modality.equals("CR") + Modality.equals("DX")) * 
+    Manufacturer.containsIgnoreCase("Medicatechusa") *
+    ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") *
+    [0018,1020].startsWithIgnoreCase("1.")
+  )
+
+  // CANON (SCRUBBED)
+  +((Modality.equals("CR") + Modality.equals("DX"))* 
+    Manufacturer.containsIgnoreCase("Canon") *
+    (ManufacturerModelName.startsWithIgnoreCase("AXIOM") + ManufacturerModelName.startsWithIgnoreCase("CXDI")) *
+    ([0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("2."))
+  )
+
+  // SHIMADZU (SCRUBBED)
+  +(Modality.equals("CR") * 
+    Manufacturer.containsIgnoreCase("Shimadzu") *
+    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+    [0018,1020].startsWithIgnoreCase("2.")
+  )
+
+  // Cuattro LLC (SCRUBBED) (ORIGINAL\PRIMARY)
+  +(Modality.equals("DX") * 
+    Manufacturer.startsWithIgnoreCase("Cuattro") *
+    ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
+    [0018,1020].startsWithIgnoreCase("3.") *
+    Rows.equals("3072") * Columns.equals("3072")
+  )
+
+  // Medlink Imaging
+  +(Modality.equals("DX") * 
+    Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
+    ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
+    [0018,1020].startsWithIgnoreCase("1.") *
+    Rows.equals("2922") * Columns.equals("1936"))
+
+) 
+
+// Anything not ORIGINAL\PRIMARY + SCRUBBER must pass the gauntlet below
++!(
+  // We explicitly do NOT accept any digitized sources
+  ManufacturersModelName.containsIgnoreCase("PACSSCAN")
+  + ManufacturersModelName.containsIgnoreCase("LUMISYS")
+  + ManufacturersModelName.containsIgnoreCase("the DiCOM box")
+  + [0008,0064].equals("DF")
+  + [0008,0064].equals("DV")
+  + [0008,0064].equals("DI")
+  + [0008,0064].equals("SD")
+  + [0008,0064].equals("SI")
+  + [0008,0064].equals("DRW")
+  + [0008,0064].equals("SYN")
+  + [0008,0064].equals("WSD")
+  + [0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
+
+  // Presentation state, SR and GSPS are omitted for now   
+  + Modality.equals("PR")
+  + Modality.equals("SR")
+  + SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.11.1") // GSPS PS
+
+  // Bad-actor PACS which embed scanned documents as ImageType ORIGINAL and no other hints 
+  // other than series number 
+  + (Manufacturer.containsIgnoreCase("INFINITT") * SeriesNumber.matches("[1-9]\d{3,}"))
+
+  // 
+  // ImageType = SECONDARY|DERIVED are filtered if they did not match a scrubbing rule above
+  // 
+  + (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED")) 
+
+  //
+  // ImageType = MISSING/EMPTY are filtered if they did not match a scrubbing rule above
+  //
+  + (ImageType.equals(""))
+
+  // Image types ORIGINAL\PRIMARY with PHI that didn't exactly match whitelist at the top
+  +(Modality.equals("DX") * 
+    Manufacturer.startsWithIgnoreCase("Cuattro") *
+    ManufacturerModelName.startsWithIgnoreCase("CloudDR")
+  )
+
+  +((Modality.equals("CR") * 
+      Manufacturer.containsIgnoreCase("KONICA") *
+      ManufacturerModelName.containsIgnoreCase("0402") *
+      [0018,1020].startsWithIgnoreCase("6."))
+    +
+    (Modality.equals("CR") * 
+      Manufacturer.containsIgnoreCase("KONICA") *
+      ManufacturerModelName.containsIgnoreCase("0402") *
+      [0018,1020].startsWithIgnoreCase("2."))
+  )
+
+  // Biopsy/pathology are omitted for now, since written text is often included
+  +(Modality.equals("DX") * 
+    Manufacturer.startsWithIgnoreCase("Bioptics Inc") *
+    ManufacturerModelName.startsWithIgnoreCase("PathVision")
+  )
+
+
+) 
+
+
+

@@ -24,7 +24,7 @@ fi
 # Helpful for debugging why pixel scrubbing is failing
 #java -Dlog4j.configuration=file:log4j.xml -jar DAT/DAT.jar -n 4 \
 
-java -jar DAT/DAT.jar -n 4 \
+java -jar DAT/DAT.jar -v -n 4 \
 	-in DICOM \
 	-out DICOM-ANON \
 	-dec \
