@@ -58,7 +58,7 @@
 
 ) 
 
-// Anything not ORIGINAL\PRIMARY + SCRUBBER must pass the gauntlet below
+// Anything everything else must pass the gauntlet below
 +!(
   // We explicitly do NOT accept any digitized sources
   ManufacturersModelName.containsIgnoreCase("PACSSCAN")
