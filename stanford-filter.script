@@ -84,14 +84,9 @@
   + (Manufacturer.containsIgnoreCase("INFINITT") * SeriesNumber.matches("[1-9]\d{3,}"))
 
   // 
-  // ImageType = SECONDARY|DERIVED are filtered if they did not match a scrubbing rule above
+  // ImageType = SECONDARY|DERIVED|(empty) are filtered if they did not match a scrubbing rule above
   // 
-  + (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED")) 
-
-  //
-  // ImageType = MISSING/EMPTY are filtered if they did not match a scrubbing rule above
-  //
-  + (ImageType.equals(""))
+  + (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED") + ImageType.equals(""))
 
   // Image types ORIGINAL\PRIMARY with PHI that didn't exactly match whitelist at the top
   +(Modality.equals("DX") * 
@@ -101,13 +96,7 @@
 
   +((Modality.equals("CR") * 
       Manufacturer.containsIgnoreCase("KONICA") *
-      ManufacturerModelName.containsIgnoreCase("0402") *
-      [0018,1020].startsWithIgnoreCase("6."))
-    +
-    (Modality.equals("CR") * 
-      Manufacturer.containsIgnoreCase("KONICA") *
-      ManufacturerModelName.containsIgnoreCase("0402") *
-      [0018,1020].startsWithIgnoreCase("2."))
+      ManufacturerModelName.containsIgnoreCase("0402")
   )
 
   // Biopsy/pathology are omitted for now, since written text is often included
@@ -116,8 +105,4 @@
     ManufacturerModelName.startsWithIgnoreCase("PathVision")
   )
 
-
-) 
-
-
-
+)

@@ -4,6 +4,11 @@
 
 This project contains baseline MIRC-CTP de-identification and filtering scripts used within Stanford IRT-RIT for anonymizing DICOM studies at scale. Use these scripts to verify that the Stanford IRT-RIT de-identification pipeline produces output acceptable for your study.
 
+**Note**
+
+These scripts are oriented towards removing PHI *and* images that are not useful for machine learning. Image types that are "DERIVED" or "SECONDARY" are excluded, as they are generally not useful for machine learning and are far more likely to contain pixel-PHI. If you modify
+these scripts to include "SECONDARY" or "DERIVED" it is very likely the pixel scrubbing scripts will pass-through images that still contain pixel-PHI.
+
 Included in this project is the MIRC-CTP command-line [DicomAnonymizerTool](https://github.com/johnperry/DicomAnonymizerTool) which allows de-identification of DICOM studies without installing the entire MIRC-CTP application. The Stanford IRT-RIT anonymization pipeline uses this same library. 
 
 ### DICOM anonymization scripts ###
