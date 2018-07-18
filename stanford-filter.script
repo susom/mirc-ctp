@@ -94,7 +94,7 @@
     ManufacturerModelName.startsWithIgnoreCase("CloudDR")
   )
 
-  +((Modality.equals("CR") * 
+  +(Modality.equals("CR") * 
       Manufacturer.containsIgnoreCase("KONICA") *
       ManufacturerModelName.containsIgnoreCase("0402")
   )

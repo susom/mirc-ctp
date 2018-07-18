@@ -18,7 +18,7 @@ JITTER="-10"
 # Helpful for debugging why pixel scrubbing is failing
 #java -Dlog4j.configuration=file:log4j.xml -jar DAT/DAT.jar -n 4 \
 
-docker run -v `pwd`:/tmp mirc-ctp -v -n 4 \
+docker run -v `pwd`:/tmp mirc-ctp -v -n 8 \
 	-in /tmp/DICOM \
 	-out /tmp/DICOM-ANON \
 	-dec \

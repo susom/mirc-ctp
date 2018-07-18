@@ -18,6 +18,8 @@ Included in this project is the MIRC-CTP command-line [DicomAnonymizerTool](http
 
 The anonymization scripts are based off the [DICOM-PS3.15E-Basic](http://dicom.nema.org/dicom/2013/output/chtml/part15/PS3.15.html) profile with additional rules for tags known to contain PHI. All vendor-specific (eg. odd-numbered) tags are also removed.
 
+A DICOM tag reference can be found [here](https://dicom.innolitics.com/ciods/cr-image/patient).
+
 ### Installation (MacOS)
 
 First ensure you have the [Oracle JDK v.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed. 
