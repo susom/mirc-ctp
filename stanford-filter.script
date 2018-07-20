@@ -60,33 +60,37 @@
 
 // Anything everything else must pass the gauntlet below
 +!(
-  // We explicitly do NOT accept any digitized sources
-  ManufacturersModelName.containsIgnoreCase("PACSSCAN")
-  + ManufacturersModelName.containsIgnoreCase("LUMISYS")
-  + ManufacturersModelName.containsIgnoreCase("the DiCOM box")
-  + [0008,0064].equals("DF")
-  + [0008,0064].equals("DV")
-  + [0008,0064].equals("DI")
-  + [0008,0064].equals("SD")
-  + [0008,0064].equals("SI")
-  + [0008,0064].equals("DRW")
-  + [0008,0064].equals("SYN")
-  + [0008,0064].equals("WSD")
-  + [0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
-
-  // Presentation state, SR and GSPS are omitted for now   
-  + Modality.equals("PR")
-  + Modality.equals("SR")
-  + SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.11.1") // GSPS PS
-
-  // Bad-actor PACS which embed scanned documents as ImageType ORIGINAL and no other hints 
-  // other than series number 
-  + (Manufacturer.containsIgnoreCase("INFINITT") * SeriesNumber.matches("[1-9]\d{3,}"))
 
   // 
   // ImageType = SECONDARY|DERIVED|(empty) are filtered if they did not match a scrubbing rule above
   // 
-  + (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED") + ImageType.equals(""))
+  (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED"))
+
+  // Omit scanned documents and secondary captures
+  + [0008,0016].startsWith("1.2.840.10008.5.1.4.1.1.7") // Secondary captures
+  + [0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
+
+	// the DiCOM box has no ImageType and ComputedRadiographyImageStorage SOPClassUID 
+	// So we can only go by the model name. These are video captures.
+  + ManufacturersModelName.containsIgnoreCase("the DiCOM box")
+
+  // Presentation state and SR are omitted for now
+  + Modality.equals("PR")
+  + Modality.equals("SR")
+  + SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.11.") // Softcopy presentation states
+  + SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.8") // SR
+
+  // Bad-actor PACS which embed scanned documents as ImageType ORIGINAL and no other hints 
+  // other than series number 
+  + (Manufacturer.containsIgnoreCase("INFINITT") * SeriesNumber.matches("[1-9]\d{3,}"))
+ 
+  // Null image type is suspicious so we whitelist only
+  + (ImageType.equals("") * 
+    !(
+      Manufacturer.startsWithIgnoreCase("Carestream Health") *
+      ManufacturerModelName.startsWithIgnoreCase("Vita CR System")
+    )
+  )
 
   // Image types ORIGINAL\PRIMARY with PHI that didn't exactly match whitelist at the top
   +(Modality.equals("DX") * 
