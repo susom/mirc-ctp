@@ -70,6 +70,9 @@
   + [0008,0016].startsWith("1.2.840.10008.5.1.4.1.1.7") // Secondary captures
   + [0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
 
+  // Burned-in annotation tag
+  + BurnedInAnnotation.containsIgnoreCase("YES")
+
 	// the DiCOM box has no ImageType and ComputedRadiographyImageStorage SOPClassUID 
 	// So we can only go by the model name. These are video captures.
   + ManufacturersModelName.containsIgnoreCase("the DiCOM box")
