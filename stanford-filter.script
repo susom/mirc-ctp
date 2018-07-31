@@ -62,13 +62,15 @@
 +!(
 
   // 
-  // ImageType = SECONDARY|DERIVED|(empty) are filtered if they did not match a scrubbing rule above
+  // ImageType = SECONDARY|DERIVED|(empty) are filtered if they did not match a scrubbing rule above.
+  // Do not remove this rule unless you are strictly filtering on other criteria! (eg. series description)
   // 
   (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED"))
 
   // Omit scanned documents and secondary captures
   + [0008,0016].startsWith("1.2.840.10008.5.1.4.1.1.7") // Secondary captures
   + [0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
+  + !ConversionType.equals("")
 
   // Burned-in annotation tag
   + BurnedInAnnotation.containsIgnoreCase("YES")
