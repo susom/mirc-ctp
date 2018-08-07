@@ -36,12 +36,6 @@ GE
     [0008,103E].containsIgnoreCase("AW electronic film") }
   (0,0,512,80)
 
- 512 x 512 screen captures
-  { [0028,0301].containsIgnoreCase("YES") * 
-    [0008,0070].containsIgnoreCase("GE MEDICAL") *
-    [0028,0010].containsIgnoreCase("512") }
-  (0,0,512,25)
-
  512 x 512 screen captures - Vessel analysis
   { [0028,0301].containsIgnoreCase("YES") * 
     [0008,0070].containsIgnoreCase("GE MEDICAL") *
@@ -260,6 +254,32 @@ MEDRAD Injection Profile
 **********************
 * Stanford additions *
 **********************
+
+**************
+   CT / PET
+**************
+
+// PET+CT Fusion
+{ (Modality.equals("PT") + Modality.equals("OT")) * 
+	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
+	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
+	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
+  ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
+  ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("512"))
+}
+(256,0,256,22)
+(300,22,212,80)
+(10,478,100,10)
+
+{ (Modality.equals("PT") + Modality.equals("OT")) * 
+	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
+	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
+	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
+  ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
+  ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("256"))
+}
+(0,0,256,50)
+
 
 **************
    CR / DX

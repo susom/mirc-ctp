@@ -6,59 +6,110 @@
 // Images with explicit scrubbing rules are passed through the filter
 (
   
-  // KONICA CR (SCRUBBED) (ORIGINAL\PRIMARY)
-  ((Modality.equals("CR") * 
-      Manufacturer.containsIgnoreCase("KONICA") *
-      ManufacturerModelName.containsIgnoreCase("0402") *
-      [0018,1020].startsWithIgnoreCase("6.") *
-      Rows.equals("2446") * Columns.equals("2446"))
-    +
-    (Modality.equals("CR") * 
-      Manufacturer.containsIgnoreCase("KONICA") *
-      ManufacturerModelName.containsIgnoreCase("0402") *
-      [0018,1020].startsWithIgnoreCase("2.") *
-      Rows.equals("2010") * Columns.equals("2446"))
-  )
+	// KONICA CR (SCRUBBED) (ORIGINAL\PRIMARY)
+	((Modality.equalsIgnoreCase("CR") * 
+			Manufacturer.containsIgnoreCase("KONICA") *
+			ManufacturerModelName.containsIgnoreCase("0402") *
+			[0018,1020].startsWithIgnoreCase("6.") *
+			Rows.equalsIgnoreCase("2446") * Columns.equalsIgnoreCase("2446"))
+		+
+		(Modality.equalsIgnoreCase("CR") * 
+			Manufacturer.containsIgnoreCase("KONICA") *
+			ManufacturerModelName.containsIgnoreCase("0402") *
+			[0018,1020].startsWithIgnoreCase("2.") *
+			Rows.equalsIgnoreCase("2010") * Columns.equalsIgnoreCase("2446"))
+	)
 
-  // Medicatechusa (SCRUBBED)
-  +((Modality.equals("CR") + Modality.equals("DX")) * 
-    Manufacturer.containsIgnoreCase("Medicatechusa") *
-    ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") *
-    [0018,1020].startsWithIgnoreCase("1.")
-  )
+	// Medicatechusa (SCRUBBED)
+	+((Modality.equalsIgnoreCase("CR") + Modality.equalsIgnoreCase("DX")) * 
+		Manufacturer.containsIgnoreCase("Medicatechusa") *
+		ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") *
+		[0018,1020].startsWithIgnoreCase("1.")
+	)
 
-  // CANON (SCRUBBED)
-  +((Modality.equals("CR") + Modality.equals("DX"))* 
-    Manufacturer.containsIgnoreCase("Canon") *
-    (ManufacturerModelName.startsWithIgnoreCase("AXIOM") + ManufacturerModelName.startsWithIgnoreCase("CXDI")) *
-    ([0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("2."))
-  )
+	// CANON (SCRUBBED)
+	+((Modality.equalsIgnoreCase("CR") + Modality.equalsIgnoreCase("DX"))* 
+		Manufacturer.containsIgnoreCase("Canon") *
+		(ManufacturerModelName.startsWithIgnoreCase("AXIOM") + ManufacturerModelName.startsWithIgnoreCase("CXDI")) *
+		([0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("2."))
+	)
 
-  // SHIMADZU (SCRUBBED)
-  +(Modality.equals("CR") * 
-    Manufacturer.containsIgnoreCase("Shimadzu") *
-    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
-    [0018,1020].startsWithIgnoreCase("2.")
-  )
+	// SHIMADZU (SCRUBBED)
+	+(Modality.equalsIgnoreCase("CR") * 
+		Manufacturer.containsIgnoreCase("Shimadzu") *
+		ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+		[0018,1020].startsWithIgnoreCase("2.")
+	)
 
-  // Cuattro LLC (SCRUBBED) (ORIGINAL\PRIMARY)
-  +(Modality.equals("DX") * 
-    Manufacturer.startsWithIgnoreCase("Cuattro") *
-    ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
-    [0018,1020].startsWithIgnoreCase("3.") *
-    Rows.equals("3072") * Columns.equals("3072")
-  )
+	// Cuattro LLC (SCRUBBED) (ORIGINAL\PRIMARY)
+	+(Modality.equalsIgnoreCase("DX") * 
+		Manufacturer.startsWithIgnoreCase("Cuattro") *
+		ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
+		[0018,1020].startsWithIgnoreCase("3.") *
+		Rows.equalsIgnoreCase("3072") * Columns.equalsIgnoreCase("3072")
+	)
 
-  // Medlink Imaging
-  +(Modality.equals("DX") * 
-    Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
-    ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
-    [0018,1020].startsWithIgnoreCase("1.") *
-    Rows.equals("2922") * Columns.equals("1936"))
+	// Medlink Imaging
+	+(Modality.equalsIgnoreCase("DX") * 
+		Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
+		ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
+		[0018,1020].startsWithIgnoreCase("1.") *
+		Rows.equalsIgnoreCase("2922") * Columns.equalsIgnoreCase("1936"))
+
+	// GE Volume Viewer
+	+(Modality.equalsIgnoreCase("OT") *
+		Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
+		ManufacturerModelName.startsWithIgnoreCase("Discovery ST") *
+		[0018,1018].startsWithIgnoreCase("Volume Viewer") *
+		[0018,1019].equalsIgnoreCase("6.10") *
+		[0018,1020].equalsIgnoreCase("41") 
+	)
+
+	// PET+CT Fusion -- Manufacturer doesn't provide much to go on
+	// Excellent candidate for OCR detection but for now whitelisted
+	// Todo: whitelist other MIMvista of type DERIVED\PRIMARY\... 
+	+(Modality.equalsIgnoreCase("CT") *
+		Manufacturer.equalsIgnoreCase("MIMvista Corp") *
+		ManufacturerModelName.equalsIgnoreCase("") *
+		[0018,1020].equalsIgnoreCase("") *
+		Rows.equalsIgnoreCase("512") * Columns.equalsIgnoreCase("512")
+	)
+
+	// Siemens CT
+	+Manufacturer.equalsIgnoreCase("SIEMENS") *
+	(
+		(ManufacturerModelName.containsIgnoreCase("Biograph 6") *
+		 [0018,1020].containsIgnoreCase("syngo CT 2006")
+		)
+		+
+		(ManufacturerModelName.containsIgnoreCase("Somaris/5 3D") *
+		 [0018,1020].containsIgnoreCase("VA45A-W")
+		)
+		+
+		(ManufacturerModelName.containsIgnoreCase("SOMATOM Definition AS") *
+		 [0018,1020].containsIgnoreCase("syngo MI.PET/CT 2012")
+		)
+	 )
+
+	 // PT - MIMvista post has shown no pixel PHI..
+	 +Manufacturer.containsIgnoreCase("/ MIM") * ImageType.containsIgnoreCase("DERIVED\PRIMARY")
+
+  // GE Discovery
+	+((Modality.equals("PT") + Modality.equals("OT")) * 
+	  Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
+	  ManufacturerModelName.startsWithIgnoreCase("Discovery") *
+	  [0018,1018].startsWithIgnoreCase("Volume Viewer") *
+	  ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
+	  (
+	   ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("512")) +
+	   ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("256"))
+	  )
+	)
+
 
 ) 
 
-// Anything everything else must pass the gauntlet below
+// Everything else must pass the gauntlet below
 +!(
 
   // 
@@ -66,11 +117,11 @@
   // Do not remove this rule unless you are strictly filtering on other criteria! (eg. series description)
   // 
   (ImageType.containsIgnoreCase("SECONDARY") + ImageType.containsIgnoreCase("DERIVED"))
-
+  
   // Omit scanned documents and secondary captures
   + [0008,0016].startsWith("1.2.840.10008.5.1.4.1.1.7") // Secondary captures
-  + [0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
-  + !ConversionType.equals("")
+  + [0008,0016].equalsIgnoreCase("1.2.840.10008.5.1.4.1.1.104.1") // Encapsulated PDF
+  + !ConversionType.equalsIgnoreCase("")
 
   // Burned-in annotation tag
   + BurnedInAnnotation.containsIgnoreCase("YES")
@@ -80,17 +131,21 @@
   + ManufacturersModelName.containsIgnoreCase("the DiCOM box")
 
   // Presentation state and SR are omitted for now
-  + Modality.equals("PR")
-  + Modality.equals("SR")
-  + SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.11.") // Softcopy presentation states
-  + SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.8") // SR
+  + Modality.equalsIgnoreCase("PR")
+  + SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.11.") // Soft-copy presentation states
+  + Modality.equalsIgnoreCase("SR")
+  + SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.8") // SR + KO
+
+	// Misc modalities
+  + Modality.equalsIgnoreCase("KO")
+  + Modality.equalsIgnoreCase("SC") 
 
   // Bad-actor PACS which embed scanned documents as ImageType ORIGINAL and no other hints 
-  // other than series number 
+  // other than a high series number 
   + (Manufacturer.containsIgnoreCase("INFINITT") * SeriesNumber.matches("[1-9]\d{3,}"))
  
   // Null image type is suspicious so we whitelist only
-  + (ImageType.equals("") * 
+  + (ImageType.equalsIgnoreCase("") * 
     !(
       Manufacturer.startsWithIgnoreCase("Carestream Health") *
       ManufacturerModelName.startsWithIgnoreCase("Vita CR System")
@@ -98,18 +153,18 @@
   )
 
   // Image types ORIGINAL\PRIMARY with PHI that didn't exactly match whitelist at the top
-  +(Modality.equals("DX") * 
+  +(Modality.equalsIgnoreCase("DX") * 
     Manufacturer.startsWithIgnoreCase("Cuattro") *
     ManufacturerModelName.startsWithIgnoreCase("CloudDR")
   )
 
-  +(Modality.equals("CR") * 
+  +(Modality.equalsIgnoreCase("CR") * 
       Manufacturer.containsIgnoreCase("KONICA") *
       ManufacturerModelName.containsIgnoreCase("0402")
   )
 
   // Biopsy/pathology are omitted for now, since written text is often included
-  +(Modality.equals("DX") * 
+  +(Modality.equalsIgnoreCase("DX") * 
     Manufacturer.startsWithIgnoreCase("Bioptics Inc") *
     ManufacturerModelName.startsWithIgnoreCase("PathVision")
   )
