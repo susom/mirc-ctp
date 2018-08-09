@@ -59,9 +59,9 @@
  <e en="F" t="0008010f" n="ContextIdentifier"></e>
  <e en="T" t="00080201" n="TimezoneOffsetFromUTC">@remove()</e>
  <e en="T" t="00081010" n="StationName">@remove()</e>
- <e en="T" t="00081030" n="StudyDescription">@remove()</e>
+ <e en="T" t="00081030" n="StudyDescription">@always()@contents((0008,1032)::(0008,0104))</e>
  <e en="F" t="00081032" n="ProcedureCodeSeq"></e>
- <e en="T" t="0008103e" n="SeriesDescription">@remove()</e>
+ <e en="T" t="0008103e" n="SeriesDescription">@always()@if(SeriesNumber,isblank) {@empty()} {Series #@contents(SeriesNumber)}</e>
  <e en="T" t="00081040" n="InstitutionalDepartmentName">@remove()</e>
  <e en="T" t="00081048" n="PhysicianOfRecord">@remove()</e>
  <e en="T" t="00081049" n="PhysicianOfRecordIdSeq">@remove()</e>
