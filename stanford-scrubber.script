@@ -298,7 +298,7 @@ Canon
     [0018,1020].startsWithIgnoreCase("V6") }
   (0,0,10000,115)
 
-KONICA
+KONICA 0402
 
   { Modality.equals("CR") * 
     Manufacturer.containsIgnoreCase("KONICA") *
