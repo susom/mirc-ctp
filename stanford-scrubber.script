@@ -259,13 +259,13 @@ MEDRAD Injection Profile
    CT / PET
 **************
 
-// PET+CT Fusion
+// GE PT/CT fusion
 { (Modality.equals("PT") + Modality.equals("OT")) * 
 	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
 	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
 	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
   ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
-  ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("512"))
+  (Rows.equals("512") * Columns.equals("512"))
 }
 (256,0,256,22)
 (300,22,212,80)
@@ -276,10 +276,46 @@ MEDRAD Injection Profile
 	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
 	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
   ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
-  ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("256"))
+  (Rows.equals("512") * Columns.equals("256"))
 }
 (0,0,256,50)
 
+// Philips PT/CT fusion
+{ Modality.equals("PT") * 
+	Manufacturer.startsWithIgnoreCase("Philips") *
+	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+	[0018,1018].startsWithIgnoreCase("EBW") *
+  [0018,1020].startsWithIgnoreCase("9.3.1") *
+  (Rows.equals("839") * Columns.equals("638"))
+}
+(0,0,839,80)
+
+{ Modality.equals("PT") * 
+	Manufacturer.startsWithIgnoreCase("Philips") *
+	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+	[0018,1018].startsWithIgnoreCase("EBW") *
+  [0018,1020].startsWithIgnoreCase("9.3.1") *
+  (Rows.equals("918") * Columns.equals("453"))
+}
+(0,0,918,100)
+
+{ Modality.equals("PT") * 
+	Manufacturer.startsWithIgnoreCase("Philips") *
+	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+	[0018,1018].startsWithIgnoreCase("EBW") *
+  [0018,1020].startsWithIgnoreCase("9.3.1") *
+  (Rows.equals("918") * Columns.equals("546"))
+}
+(0,0,918,100)
+
+{ Modality.equals("PT") * 
+	Manufacturer.startsWithIgnoreCase("Philips") *
+	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+	[0018,1018].startsWithIgnoreCase("EBW") *
+  [0018,1020].startsWithIgnoreCase("9.3.1") *
+  (Rows.equals("907") * Columns.equals("638"))
+}
+(0,0,907,110)
 
 **************
    CR / DX
@@ -314,12 +350,12 @@ KONICA 0402
     Rows.equals("2010") * Columns.equals("2446") }
   (0,0,2446,115)
   
-MEDICATECHUSA
+MedicaTechUSA
 These scans contain PHI at the upper-left, and provider at bottom.
 NOTE: The provider information is not removed, since the height of the image is variable.
 
   { (Modality.equals("CR") + Modality.equals("DX")) * 
-    Manufacturer.startsWithIgnoreCase("Medicatechusa") *
+    Manufacturer.startsWithIgnoreCase("MedicaTechUSA") *
     ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") *
     [0018,1020].startsWithIgnoreCase("1.") } 
   (0,0,10000,70)

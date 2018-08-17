@@ -242,7 +242,7 @@
  <e en="F" t="00181019" n="SecondaryCaptureDeviceSoftwareVersion"></e>
  <e en="F" t="0018101a" n="HardcopyDeviceSoftwareVersion"></e>
  <e en="F" t="0018101b" n="HardcopyDeviceManfuacturerModelName"></e>
- <e en="T" t="00181020" n="SoftwareVersion">@remove()</e>
+ <e en="T" t="00181020" n="SoftwareVersions">@remove()</e>
  <e en="F" t="00181022" n="VideoImageFormatAcquired"></e>
  <e en="F" t="00181023" n="DigitalImageFormatAcquired"></e>
  <e en="T" t="00181030" n="ProtocolName">@remove()</e>
@@ -642,8 +642,8 @@
  <e en="F" t="00200022" n="OverlayNumber"></e>
  <e en="F" t="00200024" n="CurveNumber"></e>
  <e en="F" t="00200026" n="LUTNumber"></e>
- <e en="F" t="00200032" n="ImagePosition"></e>
- <e en="F" t="00200037" n="ImageOrientation"></e>
+ <e en="F" t="00200032" n="ImagePositionPatient"></e>
+ <e en="F" t="00200037" n="ImageOrientationPatient"></e>
  <e en="T" t="00200052" n="FrameOfReferenceUID">@hashuid(@UIDROOT,this)</e>
  <e en="F" t="00200060" n="Laterality"></e>
  <e en="F" t="00200062" n="ImageLaterality"></e>
@@ -1079,9 +1079,9 @@
  <k en="F" t="0018">Keep group 0018</k>
  <k en="F" t="0020">Keep group 0020</k>
  <k en="F" t="0028">Keep group 0028</k>
+ <k en="F" t="safeprivateelements">Keep safe private elements</k>  
  <r en="T" t="curves">Remove curves</r>
  <r en="T" t="overlays">Remove overlays</r>
  <r en="T" t="privategroups">Remove private groups</r>  
- <r en="F" t="safeprivateelements">Keep safe private elements</r>  
  <r en="F" t="unspecifiedelements">Remove unchecked elements</r>
 </script>

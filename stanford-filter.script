@@ -9,7 +9,7 @@
 //
 (
   // KONICA 0402 CR -- SCRUBBED
-  (Manufacturer.containsIgnoreCase("KONICA") * Modality.equals("CR")
+  (Manufacturer.containsIgnoreCase("KONICA") * Modality.startsWithIgnoreCase("CR")
    *ManufacturerModelName.containsIgnoreCase("0402") 
    *(
      ([0018,1020].startsWithIgnoreCase("6.") * Rows.equalsIgnoreCase("2446") * Columns.equalsIgnoreCase("2446"))
@@ -18,13 +18,13 @@
   )
 
   // MedicaTechUSA KrstyalRad 660 -- SCRUBBED
-  +(Manufacturer.containsIgnoreCase("Medicatechusa") * (Modality.equalsIgnoreCase("CR") + Modality.equalsIgnoreCase("DX")) 
+  +(Manufacturer.containsIgnoreCase("Medicatechusa") * (Modality.startsWithIgnoreCase("CR") + Modality.startsWithIgnoreCase("DX")) 
     *ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") 
     *[0018,1020].startsWithIgnoreCase("1.")
   )
 
   // CANON/SHIMADZU AXIOM / CXDI V4/6 -- SCRUBBED
-  +((Manufacturer.containsIgnoreCase("Shimadzu") + Manufacturer.containsIgnoreCase("Canon")) * (Modality.equalsIgnoreCase("CR") + Modality.equalsIgnoreCase("DX")) 
+  +((Manufacturer.containsIgnoreCase("Shimadzu") + Manufacturer.containsIgnoreCase("Canon")) * (Modality.startsWithIgnoreCase("CR") + Modality.startsWithIgnoreCase("DX")) 
    *(
     (ManufacturerModelName.startsWithIgnoreCase("AXIOM") + ManufacturerModelName.startsWithIgnoreCase("CXDI")) 
     *([0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("2."))
@@ -32,14 +32,14 @@
   )
 
   // Cuattro CloudDR -- SCRUBBED
-  +(Manufacturer.startsWithIgnoreCase("Cuattro") * Modality.equalsIgnoreCase("DX") 
+  +(Manufacturer.startsWithIgnoreCase("Cuattro") * Modality.startsWithIgnoreCase("DX") 
    *ManufacturerModelName.startsWithIgnoreCase("CloudDR") 
    *[0018,1020].startsWithIgnoreCase("3.")  
    *Rows.equalsIgnoreCase("3072") * Columns.equalsIgnoreCase("3072")
   )
 
   // Medlink Imaging AltoDR -- SCRUBBED
-  +(Manufacturer.startsWithIgnoreCase("Medlink Imaging") * Modality.equalsIgnoreCase("DX")
+  +(Manufacturer.startsWithIgnoreCase("Medlink Imaging") * Modality.startsWithIgnoreCase("DX")
    *ManufacturerModelName.startsWithIgnoreCase("AltoDR") 
    *[0018,1020].startsWithIgnoreCase("1.") 
    *Rows.equalsIgnoreCase("2922") * Columns.equalsIgnoreCase("1936")
@@ -47,7 +47,7 @@
 
 
   // GE CT+PET -- SCRUBBED
-  +(Manufacturer.startsWithIgnoreCase("GE MEDICAL") * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT"))
+  +((Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS")) * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
    *(ManufacturerModelName.startsWithIgnoreCase("Discovery") 
      *[0018,1018].startsWithIgnoreCase("Volume Viewer")
      *([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4"))
@@ -69,7 +69,6 @@
   +((Manufacturer.containsIgnoreCase("/ MIM") * (Modality.equals("CT") + Modality.equals("PT")))
    *ImageType.contains("DERIVED\PRIMARY")
    *[0018,1020].equalsIgnoreCase("")
-   *Columns.equalsIgnoreCase("512") // Rows varies
   )
 
   // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed
@@ -80,6 +79,19 @@
     +(ManufacturerModelName.containsIgnoreCase("SOMATOM Definition AS") * [0018,1020].containsIgnoreCase("syngo MI.PET/CT 2012"))
     +(ManufacturerModelName.containsIgnoreCase("Emotion Duo")) 
    )
+  )
+  
+  // Philips PT/CT fusion
+  +(Manufacturer.startsWithIgnoreCase("Philips") * Modality.equals("PT") * 
+	  ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+	  [0018,1018].startsWithIgnoreCase("EBW") *
+    [0018,1020].startsWithIgnoreCase("9.3.1") *
+    (
+      (Rows.equals("839") * Columns.equals("638"))
+      +(Rows.equals("918") * Columns.equals("453"))
+      +(Rows.equals("918") * Columns.equals("546"))
+      +(Rows.equals("907") * Columns.equals("638"))
+    )
   )
 
 )
