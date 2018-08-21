@@ -71,7 +71,7 @@
    *[0018,1020].equalsIgnoreCase("")
   )
 
-  // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed
+  // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed but be careful of dose
   +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
    *(
      (ManufacturerModelName.containsIgnoreCase("Biograph 6") * [0018,1020].containsIgnoreCase("syngo CT 2006"))
@@ -80,6 +80,7 @@
     +(ManufacturerModelName.startsWithIgnoreCase("Emotion"))
     +(ManufacturerModelName.containsIgnoreCase("Sensation"))
    )
+   *!SOPClassUID.containsIgnoreCase("1.2.840.10008.5.1.4.1.1.7") // Secondary captures like dose
   )
   
   // Philips PT/CT fusion
@@ -135,7 +136,7 @@
   // 
   // Sorry, no DERIVED or SECONDARY or NULL Image Types. These must be whitelisted by device.
   // 
-  +SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7") // Secondary capture
+  +SOPClassUID.containsIgnoreCase("1.2.840.10008.5.1.4.1.1.7") // Secondary capture
   +ImageType.containsIgnoreCase("DERIVED") 
   +ImageType.containsIgnoreCase("SECONDARY") 
   +ImageType.equals("") 
