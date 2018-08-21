@@ -77,7 +77,8 @@
      (ManufacturerModelName.containsIgnoreCase("Biograph 6") * [0018,1020].containsIgnoreCase("syngo CT 2006"))
     +(ManufacturerModelName.containsIgnoreCase("Somaris/5 3D") * [0018,1020].containsIgnoreCase("VA45A-W")) 
     +(ManufacturerModelName.containsIgnoreCase("SOMATOM Definition AS") * [0018,1020].containsIgnoreCase("syngo MI.PET/CT 2012"))
-    +(ManufacturerModelName.containsIgnoreCase("Emotion Duo")) 
+    +(ManufacturerModelName.startsWithIgnoreCase("Emotion"))
+    +(ManufacturerModelName.containsIgnoreCase("Sensation"))
    )
   )
   
