@@ -77,6 +77,7 @@
      (ManufacturerModelName.containsIgnoreCase("Biograph 6") * [0018,1020].containsIgnoreCase("syngo CT 2006"))
     +(ManufacturerModelName.containsIgnoreCase("Somaris/5 3D") * [0018,1020].containsIgnoreCase("VA45A-W")) 
     +(ManufacturerModelName.containsIgnoreCase("SOMATOM Definition AS") * [0018,1020].containsIgnoreCase("syngo MI.PET/CT 2012"))
+    +(SecondaryCaptureDeviceManufacturerModelName.containsIgnoreCase("SOMATOM Definition AS") * DerivationDescription.equals("MEDCOM RESAMPLED"))
     +(ManufacturerModelName.startsWithIgnoreCase("Emotion"))
     +(ManufacturerModelName.containsIgnoreCase("Sensation"))
    )
@@ -95,6 +96,16 @@
     )
   )
 
+  // Segami Mirage (WB MAC P600) -- NM
+  +(Manufacturer.equalsIgnoreCase("Segami") 
+    *Modality.equals("NM")
+	  *ManufacturerModelName.equalsIgnoreCase("Mirage")
+    *( 
+      (Rows.equals("192") * Columns.equals("192"))
+     +(Rows.equals("512") * Columns.equals("512"))
+    ) 
+  )
+  
 )
 
 //
