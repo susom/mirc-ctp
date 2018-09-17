@@ -120,8 +120,60 @@
 // If not whitelisted above, then the image must pass the gauntlet below
 //
 +!(
+
+  // Unsupported modalities using substring, as some manufacturers use "MG/PR" or "SR/US"
+	 Modality.containsIgnoreCase("MG")
+	+Modality.containsIgnoreCase("RF")
+	+Modality.containsIgnoreCase("US")
+	+Modality.containsIgnoreCase("XA")
+
+  // Unsupported modalities, exact match
+	+Modality.equalsIgnoreCase("AN")
+	+Modality.equalsIgnoreCase("AS")
+	+Modality.equalsIgnoreCase("BD")
+	+Modality.equalsIgnoreCase("BM")
+	+Modality.equalsIgnoreCase("BMA")
+	+Modality.equalsIgnoreCase("BMD")
+	+Modality.equalsIgnoreCase("CF")
+	+Modality.equalsIgnoreCase("CV")
+	+Modality.equalsIgnoreCase("DE")
+	+Modality.equalsIgnoreCase("DEXA")
+	+Modality.equalsIgnoreCase("DF")
+	+Modality.equalsIgnoreCase("DG")
+	+Modality.equalsIgnoreCase("DMA")
+	+Modality.equalsIgnoreCase("DOC")
+	+Modality.equalsIgnoreCase("EC")
+	+Modality.equalsIgnoreCase("ECG")
+	+Modality.equalsIgnoreCase("ES")
+	+Modality.equalsIgnoreCase("FILM_CT")
+	+Modality.equalsIgnoreCase("FL")
+	+Modality.equalsIgnoreCase("HC")
+	+Modality.equalsIgnoreCase("HD")
+	+Modality.equalsIgnoreCase("IO")
+	+Modality.equalsIgnoreCase("IR")
+	+Modality.equalsIgnoreCase("KO")
+	+Modality.equalsIgnoreCase("MA")
+	+Modality.equalsIgnoreCase("PN")
+	+Modality.equalsIgnoreCase("PR")
+	+Modality.equalsIgnoreCase("RAW")
+	+Modality.equalsIgnoreCase("REPORT")
+	+Modality.equalsIgnoreCase("REQUEST")
+	+Modality.equalsIgnoreCase("RG")
+	+Modality.equalsIgnoreCase("RTDOSE")
+	+Modality.equalsIgnoreCase("RTIMAGE")
+	+Modality.equalsIgnoreCase("RTPLAN")
+	+Modality.equalsIgnoreCase("RTSTRUCT")
+	+Modality.equalsIgnoreCase("SC")
+	+Modality.equalsIgnoreCase("SD")
+	+Modality.equalsIgnoreCase("SPL")
+	+Modality.equalsIgnoreCase("SR")
+	+Modality.equalsIgnoreCase("ST")
+	+Modality.equalsIgnoreCase("TG")
+	+Modality.equalsIgnoreCase("UNQ")
+	+Modality.equalsIgnoreCase("XD")  
+	
   // Encapsulated PDF
-  [0008,0016].equalsIgnoreCase("1.2.840.10008.5.1.4.1.1.104.1") 
+  +[0008,0016].equalsIgnoreCase("1.2.840.10008.5.1.4.1.1.104.1") 
 
   // Conversion type is not empty
   +!ConversionType.equalsIgnoreCase("")
@@ -131,15 +183,8 @@
   +ManufacturersModelName.containsIgnoreCase("the DiCOM box")
 
   // Presentation state and SR are omitted, for now
-  +Modality.equalsIgnoreCase("PR")
   +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.11.") // Soft-copy presentation states
-
-  +Modality.equalsIgnoreCase("SR")
   +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.8") // SR + KO
-
-  // Misc modalities
-  +Modality.equalsIgnoreCase("KO")
-  +Modality.equalsIgnoreCase("SC") 
 
   // Bad-actor PACS which embed scanned documents as ImageType ORIGINAL and no other hints 
   // other than a high series number 
