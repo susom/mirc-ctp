@@ -123,6 +123,7 @@
 
   // Unsupported modalities using substring, as some manufacturers use "MG/PR" or "SR/US"
 	 Modality.containsIgnoreCase("MG")
+	 Modality.containsIgnoreCase("MA")
 	+Modality.containsIgnoreCase("RF")
 	+Modality.containsIgnoreCase("US")
 	+Modality.containsIgnoreCase("XA")
@@ -152,7 +153,6 @@
 	+Modality.equalsIgnoreCase("IO")
 	+Modality.equalsIgnoreCase("IR")
 	+Modality.equalsIgnoreCase("KO")
-	+Modality.equalsIgnoreCase("MA")
 	+Modality.equalsIgnoreCase("PN")
 	+Modality.equalsIgnoreCase("PR")
 	+Modality.equalsIgnoreCase("RAW")
