@@ -106,6 +106,14 @@
     ) 
   )
   
+  // Ceretom dose reports do NOT contain PHI pixels and should be anonymized
+  +(Manufacturer.equalsIgnoreCase("Neurologica") 
+    *Modality.equals("CT")
+	  *ManufacturerModelName.equalsIgnoreCase("CereTom")
+    *Rows.equals("512") * Columns.equals("512")
+    *ImageType.equals("ORIGINAL\PRIMARY\DOSE")
+  )  
+  
 )
 
 //

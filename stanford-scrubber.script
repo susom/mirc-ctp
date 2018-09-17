@@ -22,7 +22,10 @@ GE
   { [0008,0104].containsIgnoreCase("IEC Body Dosimetry Phantom") }
   (0,0,512,200)
 
-  { [0008,103e].containsIgnoreCase("Dose Report") }
+
+  { [0008,0060].containsIgnoreCase("CT") * 
+    [0008,0070].containsIgnoreCase("GE MEDICAL") *
+    [0008,103e].containsIgnoreCase("Dose Report") }
   (0,0,512,110)
 
   { [0008,0070].containsIgnoreCase("GE MEDICAL") *
@@ -92,9 +95,16 @@ Toshiba Aquilion One CT Dose Series
      PET/CT
 **************
 SIEMENS 
-  This is an overlay
-  { [6000,0022].containsIgnoreCase("Siemens MedCom Object Graphics") }
-  (0,0,512,90)
+  This is an overlay -- so it's not scrubbed -- here for future use if we add overlay scrubbing capability
+  Regression CT01
+  { [0008,0070].containsIgnoreCase("SIEMENS") *
+    [0008,1090].containsIgnoreCase("Sensation") *
+    [0008,0008].containsIgnoreCase("PROT") *
+    [0028,0011].equals("512") *
+    [0028,0010].equals("512") *
+    [6000,0022].containsIgnoreCase("Siemens MedCom Object Graphics") }
+  (0,0,337,135)
+  (338,67,107,16)
 
 **************
      US
@@ -259,7 +269,7 @@ MEDRAD Injection Profile
    CT / PET
 **************
 
-// GE PT/CT fusion
+// REG-PCT01 - GE PT/CT fusion series
 { (Modality.equals("PT") + Modality.equals("OT")) * 
 	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
 	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
@@ -271,86 +281,115 @@ MEDRAD Injection Profile
 (300,22,212,80)
 (10,478,100,10)
 
+// REG-PCT02 GE - PT/CT fusion series
 { (Modality.equals("PT") + Modality.equals("OT")) * 
 	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
 	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
 	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
   ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
-  (Rows.equals("512") * Columns.equals("256"))
+  (Columns.equals("256") * Rows.equals("512"))
 }
 (0,0,256,50)
 
-// Philips PT/CT fusion
+// REG-PCT03 Philips PT/CT fusion
 { Modality.equals("PT") * 
 	Manufacturer.startsWithIgnoreCase("Philips") *
 	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
 	[0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
-  (Rows.equals("839") * Columns.equals("638"))
+  (Columns.equals("638") * Rows.equals("839"))
 }
-(0,0,839,80)
+(0,0,638,80)
 
+// REG-PCT04 Philips PT/CT fusion
 { Modality.equals("PT") * 
 	Manufacturer.startsWithIgnoreCase("Philips") *
 	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
 	[0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
-  (Rows.equals("918") * Columns.equals("453"))
+  (Columns.equals("453") * Rows.equals("918"))
 }
-(0,0,918,100)
+(0,0,453,100)
 
+// REG-PCT05 Philips PT/CT fusion
 { Modality.equals("PT") * 
 	Manufacturer.startsWithIgnoreCase("Philips") *
 	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
 	[0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
-  (Rows.equals("918") * Columns.equals("546"))
+  (Columns.equals("546") * Rows.equals("918"))
 }
-(0,0,918,100)
+(0,0,546,100)
 
+// REG-PCT06 Philips PT/CT fusion
 { Modality.equals("PT") * 
 	Manufacturer.startsWithIgnoreCase("Philips") *
 	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
 	[0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
-  (Rows.equals("907") * Columns.equals("638"))
+  (Columns.equals("638") * Rows.equals("907"))
 }
-(0,0,907,110)
+(0,0,638,110)
 
 **************
    CR / DX
 **************
 
-Canon
-  { (Modality.equals("CR") + Modality.equals("DX")) * 
-    Manufacturer.containsIgnoreCase("Canon") *
-    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
-    ([0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("2.")) }
-  (0,0,10000,104) 
+// REG-XR01 Canon CXDI
+{ (Modality.equals("CR") + Modality.equals("DX")) * 
+	Manufacturer.containsIgnoreCase("Canon") *
+	ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+	([0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("2.")) }
+(0,0,10000,104) 
 
-  { Modality.equals("CR") * 
-    Manufacturer.containsIgnoreCase("Canon") *
-    ManufacturerModelName.startsWithIgnoreCase("AXIOM") *
-    [0018,1020].startsWithIgnoreCase("V6") }
-  (0,0,10000,115)
+// REG-XR02 Canon AXIOM
+{ Modality.equals("CR") * 
+	Manufacturer.containsIgnoreCase("Canon") *
+	ManufacturerModelName.startsWithIgnoreCase("AXIOM") *
+	[0018,1020].startsWithIgnoreCase("V6") }
+(0,0,10000,115)
 
-KONICA 0402
+// REG-XR03 KONICA 0402
+{ Modality.equals("CR") * 
+	Manufacturer.containsIgnoreCase("KONICA") *
+	ManufacturerModelName.containsIgnoreCase("0402") *
+	[0018,1020].startsWithIgnoreCase("6.") *
+	Rows.equals("2446") * Columns.equals("2446") }
+(0,2308,2446,137)
 
-  { Modality.equals("CR") * 
-    Manufacturer.containsIgnoreCase("KONICA") *
-    ManufacturerModelName.containsIgnoreCase("0402") *
-    [0018,1020].startsWithIgnoreCase("6.") *
-    Rows.equals("2446") * Columns.equals("2446") }
-  (0,2308,2446,137)
+// REG-XR04 KONICA 0402
+{ Modality.equals("CR") * 
+	Manufacturer.containsIgnoreCase("KONICA") *
+	ManufacturerModelName.containsIgnoreCase("0402") *
+	[0018,1020].startsWithIgnoreCase("2.") *
+	Rows.equals("2010") * Columns.equals("2446") }
+(0,0,2446,115)
 
-  { Modality.equals("CR") * 
-    Manufacturer.containsIgnoreCase("KONICA") *
-    ManufacturerModelName.containsIgnoreCase("0402") *
-    [0018,1020].startsWithIgnoreCase("2.") *
-    Rows.equals("2010") * Columns.equals("2446") }
-  (0,0,2446,115)
-  
-MedicaTechUSA
+
+// REG-XR05 SHIMADZU CXDI
+{ Modality.equals("CR") * 
+	Manufacturer.startsWithIgnoreCase("Shimadzu") *
+	ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+	[0018,1020].startsWithIgnoreCase("2.") }
+(0,0,10000,90)
+
+// REG-XR06 Cuattro CloudDR
+{ Modality.equals("DX") * 
+	Manufacturer.startsWithIgnoreCase("Cuattro") *
+	ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
+	[0018,1020].startsWithIgnoreCase("3.")  *
+	Rows.equals("3072") * Columns.equals("3072") }
+(2500,0,572,400)
+
+// REG-XR07 Medlink Imaging 
+{ Modality.equals("DX") * 
+	Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
+	ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
+	[0018,1020].startsWithIgnoreCase("1.") *
+	Rows.equals("2922") * Columns.equals("1936") }
+(0,0,1936,50)
+
+// REG-XR08 MedicaTechUSA
 These scans contain PHI at the upper-left, and provider at bottom.
 NOTE: The provider information is not removed, since the height of the image is variable.
 
@@ -359,31 +398,4 @@ NOTE: The provider information is not removed, since the height of the image is 
     ManufacturerModelName.startsWithIgnoreCase("KrystalRad 660") *
     [0018,1020].startsWithIgnoreCase("1.") } 
   (0,0,10000,70)
-
-SHIMADZU
-
-  { Modality.equals("CR") * 
-    Manufacturer.startsWithIgnoreCase("Shimadzu") *
-    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
-    [0018,1020].startsWithIgnoreCase("2.") }
-  (0,0,10000,90)
-
-Cuattro, LLC
-
-  { Modality.equals("DX") * 
-    Manufacturer.startsWithIgnoreCase("Cuattro") *
-    ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
-    [0018,1020].startsWithIgnoreCase("3.")  *
-    Rows.equals("3072") * Columns.equals("3072") }
-  (2500,0,572,400)
-
-Medlink Imaging 
-
-  { Modality.equals("DX") * 
-    Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
-    ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
-    [0018,1020].startsWithIgnoreCase("1.") *
-    Rows.equals("2922") * Columns.equals("1936") }
-  (0,0,1936,50)
-
 
