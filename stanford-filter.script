@@ -114,6 +114,28 @@
     *ImageType.equals("ORIGINAL\PRIMARY\DOSE")
   )  
   
+  // Mammography
+  
+  // Almost all mammo manufacturers need their own whitelist since the majority are DERIVED
+  +(Modality.equals("MG")
+    *(
+      (Manufacturer.equalsIgnoreCase("CARESTREAM") * ManufacturerModelName.equalsIgnoreCase("CLASSIC CR"))
+     +(Manufacturer.containsIgnoreCase("Hologic") * ManufacturerModelName.containsIgnoreCase("Selenia"))
+     +(Manufacturer.containsIgnoreCase("Lorad") * ManufacturerModelName.containsIgnoreCase("Selenia"))
+     +(Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS") * ManufacturerModelName.containsIgnoreCase("Senograph"))
+     +(Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS") * ManufacturerModelName.containsIgnoreCase("ADS_"))
+     +(Manufacturer.containsIgnoreCase("MPTronic") * ManufacturerModelName.containsIgnoreCase("Senograph"))
+     +(Manufacturer.containsIgnoreCase("FUJI") * ManufacturerModelName.containsIgnoreCase("Clearview CSm"))
+     +(Manufacturer.containsIgnoreCase("FUJI") * ManufacturerModelName.containsIgnoreCase("FDR"))
+     +(Manufacturer.containsIgnoreCase("Fischer") * ManufacturerModelName.containsIgnoreCase("SenoScan"))
+     +(Manufacturer.containsIgnoreCase("IMS") * ManufacturerModelName.containsIgnoreCase("GIOTTO"))
+     +(Manufacturer.containsIgnoreCase("KODAK") * ManufacturerModelName.equalsIgnoreCase("ELITE CR"))
+     +(Manufacturer.containsIgnoreCase("KODAK") * ManufacturerModelName.equalsIgnoreCase("CLASSIC CR"))
+     +(Manufacturer.containsIgnoreCase("SIEMENS") * ManufacturerModelName.containsIgnoreCase("Mammomat"))
+     +(Manufacturer.containsIgnoreCase("TMSC") * ManufacturerModelName.equalsIgnoreCase("MGU-1000D"))
+    )
+  )
+  
 )
 
 //
@@ -122,9 +144,9 @@
 +!(
 
   // Unsupported modalities using substring, as some manufacturers use "MG/PR" or "SR/US"
-	 Modality.containsIgnoreCase("MG")
-	+Modality.containsIgnoreCase("MA")
-	+Modality.containsIgnoreCase("RF")
+	 //Modality.containsIgnoreCase("MG")
+	 //Modality.containsIgnoreCase("MA")
+	Modality.containsIgnoreCase("RF")
 	+Modality.containsIgnoreCase("US")
 	+Modality.containsIgnoreCase("XA")
 
@@ -180,8 +202,15 @@
   
   // the DiCOM box has no ImageType and ComputedRadiographyImageStorage SOPClassUID 
   // So we can only go by the model name. These are video captures.
-  +ManufacturersModelName.containsIgnoreCase("the DiCOM box")
+  +ManufacturerModelName.containsIgnoreCase("the DiCOM box")
 
+  // No Vidar film scanners
+  +Manufacturer.containsIgnoreCase("vidar")
+  +ManufacturerModelName.containsIgnoreCase("vidar")
+  
+  // iCAD mammo scanners.. model name is blank so can't be more specific
+  +Manufacturer.containsIgnoreCase("icad")
+  
   // Presentation state and SR are omitted, for now
   +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.11.") // Soft-copy presentation states
   +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.8") // SR + KO
@@ -190,12 +219,13 @@
   // other than a high series number 
   +(Manufacturer.containsIgnoreCase("INFINITT") * SeriesNumber.matches("[1-9]\d{3,}"))
 
-  // Biopsy/pathology are omitted for now, since written text is often included in the photograph/slide
-  +(Modality.equalsIgnoreCase("DX")
-   * Manufacturer.startsWithIgnoreCase("Bioptics Inc") 
-   * ManufacturerModelName.startsWithIgnoreCase("PathVision")
-  )
-
+  // Biopsy/pathology are omitted for now
+  +Manufacturer.containsIgnoreCase("Bioptics")
+  +ManufacturerModelName.containsIgnoreCase("Biovision")
+  +Manufacturer.containsIgnoreCase("Faxitron")
+  +Manufacturer.containsIgnoreCase("KUBTEC")
+  +(Manufacturer.containsIgnoreCase("Hologic") * ManufacturerModelName.containsIgnoreCase("Trident"))
+  
   // 
   // Sorry, no DERIVED or SECONDARY or NULL Image Types. These must be whitelisted by device.
   // 
@@ -203,5 +233,7 @@
   +ImageType.containsIgnoreCase("DERIVED") 
   +ImageType.containsIgnoreCase("SECONDARY") 
   +ImageType.equals("") 
+
+  +BurnedInAnnotation.equalsIgnoreCase("YES")
 
 )

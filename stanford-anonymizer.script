@@ -14,7 +14,7 @@
  <e en="F" t="00100010" n="PatientName">@hash(PatientID, 64)</e>
   
  <!-- Replace SeriesDescription -->
- <e en="T" t="0008103e" n="SeriesDescription">@always()@if(SeriesNumber,isblank) {@empty()} {Series #@contents(SeriesNumber)}</e>
+ <e en="T" t="0008103e" n="SeriesDescription">@always()@if(SeriesNumber,isblank) {@empty()} {Series @contents(SeriesNumber)}</e>
 
  <!-- Keep SeriesDescription -->
  <e en="F" t="0008103e" n="SeriesDescription">@keep()</e>
