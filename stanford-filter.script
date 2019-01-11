@@ -116,7 +116,7 @@
   
   // Mammography
   
-  // Almost all mammo manufacturers need their own whitelist since the majority are DERIVED
+  // Almost all mammo manufacturers need their own whitelist since the many are DERIVED\PRIMARY
   +(Modality.equals("MG")
     *(
       (Manufacturer.equalsIgnoreCase("CARESTREAM") * ManufacturerModelName.equalsIgnoreCase("CLASSIC CR"))
@@ -133,6 +133,18 @@
      +(Manufacturer.containsIgnoreCase("KODAK") * ManufacturerModelName.equalsIgnoreCase("CLASSIC CR"))
      +(Manufacturer.containsIgnoreCase("SIEMENS") * ManufacturerModelName.containsIgnoreCase("Mammomat"))
      +(Manufacturer.containsIgnoreCase("TMSC") * ManufacturerModelName.equalsIgnoreCase("MGU-1000D"))
+    )
+    *!(
+     // For mammo we can't just filter on DERIVED. So we avoid SECONDARY except for a few manufacturers.
+     (ImageType.containsIgnoreCase("SECONDARY")
+      *!(
+         (Manufacturer.containsIgnoreCase("Hologic") * ManufacturerModelName.containsIgnoreCase("Selenia"))
+         +(Manufacturer.containsIgnoreCase("Lorad") * ManufacturerModelName.containsIgnoreCase("Selenia"))
+      )
+     )
+     +ImageType.containsIgnoreCase("SCREEN SAVE")
+     +ImageType.equals("")
+     +BurnedInAnnotation.equalsIgnoreCase("YES")
     )
   )
   
@@ -233,7 +245,7 @@
   +ImageType.containsIgnoreCase("DERIVED") 
   +ImageType.containsIgnoreCase("SECONDARY") 
   +ImageType.equals("") 
-
   +BurnedInAnnotation.equalsIgnoreCase("YES")
+
 
 )
