@@ -140,9 +140,10 @@
       *!(
          (Manufacturer.containsIgnoreCase("Hologic") * ManufacturerModelName.containsIgnoreCase("Selenia"))
          +(Manufacturer.containsIgnoreCase("Lorad") * ManufacturerModelName.containsIgnoreCase("Selenia"))
+         +(Manufacturer.containsIgnoreCase("TMSC") * ManufacturerModelName.equalsIgnoreCase("MGU-1000D"))
       )
      )
-     +ImageType.containsIgnoreCase("SCREEN SAVE")
+     +ImageType.containsIgnoreCase("SCREEN")
      +ImageType.equals("")
      +BurnedInAnnotation.equalsIgnoreCase("YES")
     )
