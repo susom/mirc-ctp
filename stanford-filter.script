@@ -148,6 +148,14 @@
      +BurnedInAnnotation.equalsIgnoreCase("YES")
     )
   )
+
+  // BREAST MRI
+  +(Modality.equals("MR")
+    *(
+     (Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS") * ManufacturerModelName.containsIgnoreCase("DISCOVERY"))
+     *ImageType.contains("DERIVED\PRIMARY\DIXON\WATER")
+    )
+  )
   
 )
 
