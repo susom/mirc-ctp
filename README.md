@@ -20,7 +20,11 @@ The anonymization scripts are based off the [DICOM-PS3.15E-Basic](http://dicom.n
 
 A DICOM tag reference can be found [here](https://dicom.innolitics.com/ciods/cr-image/patient).
 
-### Installation (MacOS)
+### Requirements
+
+Since we run this tool on MacOS, it requires docker (see below)
+
+### Installation
 
 First ensure you have the [Oracle JDK v.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed. 
 
@@ -63,6 +67,10 @@ where:
 ...
 ```
 
+Now the application needs to be placed in a Docker image. To create the image: 
+
+`docker build -f Dockerfile --pull -t mirc-ctp .` 
+
 You can now place some test DICOM studies in the directory `DICOM` and run the shell script which will anonymize the studies (all to the same anonymous MRN and Accession Number) and place them in `DICOM-ANON`
 
 ```
@@ -79,15 +87,8 @@ Elapsed time: 0.634
 
 You can now open the DICOM files in `DICOM-ANON` to make sure they work with your intended application.
 
-You may want to look at the contents of `anonymize.sh` to understand how the MIRC-CTP application is invoked.
-
-### A note about pixel scrubbing and MacOS
+### Pixel filtering and MacOS 
 
 In order to read DICOM encoded with the JPEG Lossless syntax, you need to have the Java Advanced Imaging ImageIO libraries.
-Unfortunately, these are not available for Mac. To get around this limitation, you can run this application
-from within a Docker container. A Dockerfile is included in this distribution, to create the image run:
-
-`docker build -f Dockerfile --pull -t mirc-ctp .` 
- 
-You can then use the `anonymize-mac.sh` script instead of `anonymize.sh` to anonymize DICOM directories with support
-for these image formats. 
+Unfortunately, these are not available for Mac. To get around this limitation, this application executes within Docker. 
+A Dockerfile is included in this distribution.

@@ -52,8 +52,8 @@
      *[0018,1018].startsWithIgnoreCase("Volume Viewer")
      *([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4"))
      *(
-       ([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("512")) 
-      +([0028,0010].containsIgnoreCase("512") * [0028,0011].containsIgnoreCase("256"))
+       (Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("512")) 
+      +(Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("256"))
      )
    )
   )
@@ -85,8 +85,8 @@
   
   // Philips PT/CT fusion
   +(Manufacturer.startsWithIgnoreCase("Philips") * Modality.equals("PT") * 
-	  ManufacturerModelName.startsWithIgnoreCase("Guardian") *
-	  [0018,1018].startsWithIgnoreCase("EBW") *
+    ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+    [0018,1018].startsWithIgnoreCase("EBW") *
     [0018,1020].startsWithIgnoreCase("9.3.1") *
     (
       (Rows.equals("839") * Columns.equals("638"))
@@ -99,7 +99,7 @@
   // Segami Mirage (WB MAC P600) -- NM
   +(Manufacturer.equalsIgnoreCase("Segami") 
     *Modality.equals("NM")
-	  *ManufacturerModelName.equalsIgnoreCase("Mirage")
+    *ManufacturerModelName.equalsIgnoreCase("Mirage")
     *( 
       (Rows.equals("192") * Columns.equals("192"))
      +(Rows.equals("512") * Columns.equals("512"))
@@ -109,7 +109,7 @@
   // Ceretom dose reports do NOT contain PHI pixels and should be anonymized
   +(Manufacturer.equalsIgnoreCase("Neurologica") 
     *Modality.equals("CT")
-	  *ManufacturerModelName.equalsIgnoreCase("CereTom")
+    *ManufacturerModelName.equalsIgnoreCase("CereTom")
     *Rows.equals("512") * Columns.equals("512")
     *ImageType.equals("ORIGINAL\PRIMARY\DOSE")
   )  
@@ -157,6 +157,315 @@
     )
   )
   
+  // Ultrasound 
+  +(Modality.contains("US")
+   *(
+     (Manufacturer.equalsIgnoreCase("ACUSON") * ManufacturerModelName.containsIgnoreCase("SEQUOIA")
+      *!ImageType.equals("ORIGINAL\PRIMARY\\0000")
+      *(
+        (Rows.equals("480") * Columns.equals("640"))
+       +(Rows.equals("456") * Columns.equals("576"))
+      )
+     )
+     
+     +(Manufacturer.containsIgnoreCase("ALOKA") * ManufacturerModelName.equalsIgnoreCase("SSD-ALPHA5")
+      *!ImageType.equals("ORIGINAL\PRIMARY\\0000")
+      *Rows.equals("480") * Columns.equals("640")
+     )
+
+     +(Manufacturer.containsIgnoreCase("ATL") * (ManufacturerModelName.equalsIgnoreCase("HDI 5000")+ManufacturerModelName.equalsIgnoreCase("HDI 3000"))
+      *!InstanceNumber.equals("0") // Demographics screen not detectable via DICOM tags 
+      *Rows.equals("476") * Columns.equals("640")
+     )
+
+     //////////////////
+     // GE Ultrasound
+     //
+     +((Manufacturer.startsWith("GE")+Manufacturer.startsWith("G.E."))
+
+      // SOP Class whitelists for all GE models
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6") 
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+       // +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.7") -- Not until we have OCR
+      )
+
+      // Screenshots have been found in this ImageType with SOPClassUID 1.2.840.10008.5.1.4.1.1.6
+      // For Model LOGIQE9 with SoftwareVersions LOGIQS8:R3.1.6, LOGIQe:LOGIQ e R9.0.3
+      // We skip for all GE models though just in case
+      *(!(ImageType.equals("DERIVED\PRIMARY\\0000") * SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")))
+     
+      *(
+
+       // INVENIA
+       (ManufacturerModelName.equals("Invenia")
+        // No scrubbing needed?!
+        // Versions 1.1.0, 1.1.3
+        *Rows.equals("482") * Columns.equals("841")
+       )
+
+       // Vivide 
+       +(ManufacturerModelName.equals("Vivide")
+        *Rows.equals("614") * Columns.equals("820")
+       )
+
+       // Vivid i 
+       +(ManufacturerModelName.equals("Vivid i")
+        *((Rows.equals("422") * Columns.equals("636"))
+         +(Rows.equals("434") * Columns.equals("636"))
+        )
+       )
+
+       // Vivid S5 
+       +(ManufacturerModelName.equals("Vivid S5")
+        *((Rows.equals("422") * Columns.equals("636"))
+        )
+       )
+
+       // Vivid S6 
+       +(ManufacturerModelName.equals("Vivid S6")
+        *((Rows.equals("422") * Columns.equals("636"))
+         +(Rows.equals("434") * Columns.equals("636"))
+        )
+       )
+
+       // Vivid 7
+       +(ManufacturerModelName.equals("Vivid7")
+        *((Rows.equals("434") * Columns.equals("636"))
+         +(Rows.equals("434") * Columns.equals("640"))
+         +(Rows.equals("484") * Columns.equals("636"))
+        )
+       )
+
+       // Vivid E9
+       +(ManufacturerModelName.equals("Vivid E9")
+        *((Rows.equals("759") * Columns.equals("1020"))
+         +(Rows.equals("434") * Columns.equals("636"))
+         +(Rows.equals("484") * Columns.equals("636"))
+         +(Rows.equals("709") * Columns.equals("1020"))
+        )
+       )
+
+
+       // Vivid E95
+       +(ManufacturerModelName.equals("Vivid E95")
+        *((Rows.equals("708") * Columns.equals("1016"))
+        )
+       )
+       
+       // Vivid 3
+       +(ManufacturerModelName.equals("Vivid 3")
+        *((Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("434") * Columns.equals("636"))
+        )
+       )
+       
+       // Voluson P
+       +(ManufacturerModelName.equals("Voluson P")
+        *((Rows.equals("600") * Columns.equals("800"))
+        )
+       )
+       
+       // Voluson S
+       +(ManufacturerModelName.equals("Voluson S")
+        *((Rows.equals("743") * Columns.equals("975"))
+        )
+       )
+
+       // Voluson E8
+       +(ManufacturerModelName.equals("Voluson E8")
+        *((Rows.equals("852") * Columns.equals("1136"))
+        )
+       )
+
+       // Vivid Q 
+       +(ManufacturerModelName.equals("Vivid q")
+        *((Rows.equals("422") * Columns.equals("636"))
+         +(Rows.equals("434") * Columns.equals("636"))
+        )
+       )
+
+       // LOGIQworksE9
+       +(ManufacturerModelName.equals("LOGIQworksE9")
+          // Resolution whitelists
+          *(Rows.equals("434") * Columns.equals("532")) // No PHI found
+       )
+
+       // LOGIQe
+       +(ManufacturerModelName.equals("LOGIQe")
+          // Resolution whitelists
+          *((Rows.equals("434") * Columns.equals("532")) // No PHI found
+           +(Rows.equals("590") * Columns.equals("819"))
+           +(Rows.equals("614") * Columns.equals("820"))
+          )
+       )
+
+       // LOGIQi
+       +(ManufacturerModelName.equals("LOGIQi")
+          // Resolution whitelists
+          *((Rows.equals("434") * Columns.equals("532")) // No PHI found
+           +(Rows.equals("600") * Columns.equals("800"))
+          )
+       )
+
+       // LOGIQE9
+       +((ManufacturerModelName.equals("LOGIQE9") * !SoftwareVersion.contains("LOGIQe:"))
+          // Resolution whitelists
+          *(
+            (Rows.equals("970") * Columns.equals("1552"))
+           +(Rows.equals("873") * Columns.equals("1552"))
+           +(Rows.equals("899") * Columns.equals("1442"))
+           +(Rows.equals("819") * Columns.equals("1456"))
+           +(Rows.equals("802") * Columns.equals("1442"))
+           +(Rows.equals("748") * Columns.equals("1346"))
+           +(Rows.equals("768") * Columns.equals("1280"))
+           +(Rows.equals("720") * Columns.equals("1280"))
+           +(Rows.equals("649") * Columns.equals("1170"))
+           +(Rows.equals("873") * Columns.equals("1164"))
+           +(Rows.equals("819") * Columns.equals("1092"))
+           +(Rows.equals("802") * Columns.equals("1054"))
+           +(Rows.equals("748") * Columns.equals("982"))
+           +(Rows.equals("720") * Columns.equals("960"))
+           +(Rows.equals("519") * Columns.equals("936"))
+           +(Rows.equals("697") * Columns.equals("914"))
+           +(Rows.equals("649") * Columns.equals("852"))
+           +(Rows.equals("649") * Columns.equals("850"))
+           +(Rows.equals("614") * Columns.equals("820"))
+           +(Rows.equals("421") * Columns.equals("760"))
+           +(Rows.equals("519") * Columns.equals("680"))
+           +(Rows.equals("421") * Columns.equals("552"))
+          )
+       )
+
+
+       // LOGICQS6
+       +((ManufacturerModelName.equals("LOGIQ S6") +
+         (ManufacturerModelName.equals("LOGIQ7") * SoftwareVersion.startsWith("LOGIQ S6")))
+         // Resolution whitelists
+         *((Rows.equals("434") * Columns.equals("532"))
+          +(Rows.equals("768") * Columns.equals("1024"))
+         )
+        )
+
+       // LOGICQS7
+       +(ManufacturerModelName.equals("LOGIQS7")
+         // Resolution whitelists
+         *((Rows.equals("421") * Columns.equals("552"))
+          +(Rows.equals("649") * Columns.equals("850"))
+          +(Rows.equals("720") * Columns.equals("960"))
+          +(Rows.equals("720") * Columns.equals("1280"))
+         )
+        )
+
+
+       // LOGICQS8
+       +(ManufacturerModelName.equals("LOGIQS8")
+         // Resolution whitelists
+         *((Rows.equals("421") * Columns.equals("552"))
+          +(Rows.equals("600") * Columns.equals("600"))
+          +(Rows.equals("649") * Columns.equals("850"))
+          +(Rows.equals("720") * Columns.equals("960"))
+          +(Rows.equals("819") * Columns.equals("1092"))
+          +(Rows.equals("802") * Columns.equals("1054"))
+          +(Rows.equals("873") * Columns.equals("1164"))
+          +(Rows.equals("649") * Columns.equals("1170"))
+          +(Rows.equals("720") * Columns.equals("1280"))
+          +(Rows.equals("748") * Columns.equals("1346"))
+          +(Rows.equals("802") * Columns.equals("1442"))
+          +(Rows.equals("819") * Columns.equals("1456"))
+          +(Rows.equals("873") * Columns.equals("1552"))
+          +(Rows.equals("970") * Columns.equals("1552"))
+         )
+        )
+
+
+       // LOGIQP5
+       +(ManufacturerModelName.equals("LOGIQP5")
+         // Resolution whitelists
+         *((Rows.equals("434") * Columns.equals("532"))
+          +(Rows.equals("614") * Columns.equals("816"))
+         )
+        )
+
+       // LOGIQP6
+       +(ManufacturerModelName.equals("LOGIQP6")
+         // Resolution whitelists
+         *((Rows.equals("434") * Columns.equals("532"))
+          +(Rows.equals("614") * Columns.equals("816"))
+         )
+        )
+
+       // LOGIQP9
+       +(ManufacturerModelName.equals("LOGIQP9")
+         // Resolution whitelists
+         *((Rows.equals("856") * Columns.equals("1142"))
+          +(Rows.equals("912") * Columns.equals("1216"))
+         )
+        )
+
+       // LOGIQ5 (validated)
+       +(ManufacturerModelName.equals("LOGIQ5")
+          *Rows.equals("480") * Columns.equals("640")
+       )
+
+       // LOGICQ7
+       +(ManufacturerModelName.equals("LOGIQ7")
+        *(
+          // Resolution whitelists
+          (Rows.equals("434") * Columns.equals("532")) // No PHI found
+         +(Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("768") * Columns.equals("1024"))
+        )
+       )
+
+       // LOGICQ9
+       +(ManufacturerModelName.equals("LOGIQ9")
+        *(
+          // Resolution whitelists
+          (Rows.equals("434") * Columns.equals("532")) // No PHI found
+         +(Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("697") * Columns.equals("854")) // No PHI found
+         +(Rows.equals("697") * Columns.equals("856")) // No PHI found
+         +(Rows.equals("600") * Columns.equals("800")) // PHI only in secondary
+         +(Rows.equals("768") * Columns.equals("1024"))
+        )
+       )
+
+       // LOGIQBook
+       +(ManufacturerModelName.equals("LOGIQBook")
+          // Resolution whitelists
+          *(Rows.equals("434") * Columns.equals("532")) // No PHI found
+       )
+
+       // V830
+       +(ManufacturerModelName.equals("V830")
+          // Resolution whitelists
+          *((Rows.equals("480") * Columns.equals("640"))
+           +(Rows.equals("600") * Columns.equals("800")) 
+           +(Rows.equals("650") * Columns.equals("868")) 
+           +(Rows.equals("662") * Columns.equals("930")) 
+           +(Rows.equals("720") * Columns.equals("960")) 
+           +(Rows.equals("735") * Columns.equals("960")) 
+           +(Rows.equals("735") * Columns.equals("975")) 
+           +(Rows.equals("743") * Columns.equals("975")) 
+           +(Rows.equals("682") * Columns.equals("1134")) 
+           +(Rows.equals("852") * Columns.equals("1136")) 
+          )
+       )
+              
+       // EchoPAC (no PHI found)
+       +(ManufacturerModelName.equals("EchoPAC PC")
+          // Resolution whitelists
+          *((Rows.equals("434") * Columns.equals("636"))           
+           +(Rows.equals("850") * Columns.equals("1081")) 
+          )
+       )
+                
+       // End of GE models
+        
+       )
+      )
+    )
+   )
 )
 
 //
@@ -164,62 +473,62 @@
 //
 +!(
 
-  // Unsupported modalities using substring, as some manufacturers use "MG/PR" or "SR/US"
-	 //Modality.containsIgnoreCase("MG")
-	 //Modality.containsIgnoreCase("MA")
-	Modality.containsIgnoreCase("RF")
-	+Modality.containsIgnoreCase("US")
-	+Modality.containsIgnoreCase("XA")
+  // Unsupported modalities (except above) using substring, as some manufacturers use "MG/PR" or "SR/US"
+  Modality.containsIgnoreCase("MG")
+  +Modality.containsIgnoreCase("MA")
+  +Modality.containsIgnoreCase("RF")
+  +Modality.containsIgnoreCase("US")
+  +Modality.containsIgnoreCase("XA")
 
   // Unsupported modalities, exact match
-	+Modality.equalsIgnoreCase("AN")
-	+Modality.equalsIgnoreCase("AS")
-	+Modality.equalsIgnoreCase("BD")
-	+Modality.equalsIgnoreCase("BM")
-	+Modality.equalsIgnoreCase("BMA")
-	+Modality.equalsIgnoreCase("BMD")
-	+Modality.equalsIgnoreCase("CF")
-	+Modality.equalsIgnoreCase("CV")
-	+Modality.equalsIgnoreCase("DE")
-	+Modality.equalsIgnoreCase("DEXA")
-	+Modality.equalsIgnoreCase("DF")
-	+Modality.equalsIgnoreCase("DG")
-	+Modality.equalsIgnoreCase("DMA")
-	+Modality.equalsIgnoreCase("DOC")
-	+Modality.equalsIgnoreCase("EC")
-	+Modality.equalsIgnoreCase("ECG")
-	+Modality.equalsIgnoreCase("ES")
-	+Modality.equalsIgnoreCase("FILM_CT")
-	+Modality.equalsIgnoreCase("FL")
-	+Modality.equalsIgnoreCase("HC")
-	+Modality.equalsIgnoreCase("HD")
-	+Modality.equalsIgnoreCase("IO")
-	+Modality.equalsIgnoreCase("IR")
-	+Modality.equalsIgnoreCase("KO")
-	+Modality.equalsIgnoreCase("PN")
-	+Modality.equalsIgnoreCase("PR")
-	+Modality.equalsIgnoreCase("RAW")
-	+Modality.equalsIgnoreCase("REPORT")
-	+Modality.equalsIgnoreCase("REQUEST")
-	+Modality.equalsIgnoreCase("RG")
-	+Modality.equalsIgnoreCase("RTDOSE")
-	+Modality.equalsIgnoreCase("RTIMAGE")
-	+Modality.equalsIgnoreCase("RTPLAN")
-	+Modality.equalsIgnoreCase("RTSTRUCT")
-	+Modality.equalsIgnoreCase("SC")
-	+Modality.equalsIgnoreCase("SD")
-	+Modality.equalsIgnoreCase("SPL")
-	+Modality.equalsIgnoreCase("SR")
-	+Modality.equalsIgnoreCase("ST")
-	+Modality.equalsIgnoreCase("TG")
-	+Modality.equalsIgnoreCase("UNQ")
-	+Modality.equalsIgnoreCase("XD")  
-	
+  +Modality.equals("AN")
+  +Modality.equals("AS")
+  +Modality.equals("BD")
+  +Modality.equals("BM")
+  +Modality.equals("BMA")
+  +Modality.equals("BMD")
+  +Modality.equals("CF")
+  +Modality.equals("CV")
+  +Modality.equals("DE")
+  +Modality.equals("DEXA")
+  +Modality.equals("DF")
+  +Modality.equals("DG")
+  +Modality.equals("DMA")
+  +Modality.equals("DOC")
+  +Modality.equals("EC")
+  +Modality.equals("ECG")
+  +Modality.equals("ES")
+  +Modality.equals("FILM_CT")
+  +Modality.equals("FL")
+  +Modality.equals("HC")
+  +Modality.equals("HD")
+  +Modality.equals("IO")
+  +Modality.equals("IR")
+  +Modality.equals("KO")
+  +Modality.equals("PN")
+  +Modality.equals("PR")
+  +Modality.equals("RAW")
+  +Modality.equals("REPORT")
+  +Modality.equals("REQUEST")
+  +Modality.equals("RG")
+  +Modality.equals("RTDOSE")
+  +Modality.equals("RTIMAGE")
+  +Modality.equals("RTPLAN")
+  +Modality.equals("RTSTRUCT")
+  +Modality.equals("SC")
+  +Modality.equals("SD")
+  +Modality.equals("SPL")
+  +Modality.equals("SR")
+  +Modality.equals("ST")
+  +Modality.equals("TG")
+  +Modality.equals("UNQ")
+  +Modality.equals("XD")  
+  
   // Encapsulated PDF
-  +[0008,0016].equalsIgnoreCase("1.2.840.10008.5.1.4.1.1.104.1") 
+  +[0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") 
 
   // Conversion type is not empty
-  +!ConversionType.equalsIgnoreCase("")
+  +!ConversionType.equals("")
   
   // the DiCOM box has no ImageType and ComputedRadiographyImageStorage SOPClassUID 
   // So we can only go by the model name. These are video captures.

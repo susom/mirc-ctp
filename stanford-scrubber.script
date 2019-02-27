@@ -1,16 +1,20 @@
 Burned-in Annotation Library
 
+This is a modified version of the DicomPixelAnonymizer script from MIRC CTP.
+
+Original header is as follows:
+
 This DicomPixelAnonymizer script file contains known regions in certain modality 
 images where PHI has been found to be present. This script has been compiled from
 the contributions of many users. Additional contributions are welcome.
 
 Important note: It is the responsibility of the user to review DICOM images to be 
 sure that all areas of PHI are removed from an image before it is considered
-anonymized.  If you have additional filetypes and signatures to add to this list,
+anonymized.  If you have additional file types and signatures to add to this list,
 please send them to johnperry@dls.net.
 
 For information on the DicomPixelAnonymizer and the format of this file,see:
-	http://mircwiki.rsna.org/index.php?title=The_CTP_DICOM_Pixel_Anonymizer
+    http://mircwiki.rsna.org/index.php?title=The_CTP_DICOM_Pixel_Anonymizer
 
 
 **************
@@ -43,19 +47,19 @@ GE
   { [0028,0301].containsIgnoreCase("YES") * 
     [0008,0070].containsIgnoreCase("GE MEDICAL") *
     [0008,103e].containsIgnoreCase("AVA Report") *
-    [0028,0010].containsIgnoreCase("512") }
+    Rows.equals("512") }
   (0,0,200,250)
 
  512 x 512 screen captures - Volume Rendering - MRCP
   { [0008,0008].containsIgnoreCase("VOLREN") *
-    [0028,0010].containsIgnoreCase("512") *
-    [0028,0011].containsIgnoreCase("512") }
+    Rows.equals("512") *
+    Columns.equals("512") }
    (350,0,162,30) (390,80,122,15)
 
  1024 x 1024 screen captures
   { [0028,0301].containsIgnoreCase("YES") * 
     [0008,0070].containsIgnoreCase("GE MEDICAL") *
-    [0028,0010].containsIgnoreCase("1024") }
+    Rows.equals("1024") }
   (0,0,300,150)   (724,0,300,150)
 
 VITREA
@@ -63,7 +67,7 @@ VITREA
  Stent Planning Worksheet
   { [0008,0070].containsIgnoreCase("VITAL Images") *
     ( [0008,103e].containsIgnoreCase("AAA") + [0008,103e].containsIgnoreCase("Report") ) *
-    [0028,0010].containsIgnoreCase("1041") }
+    Rows.equals("1041") }
   (0,0,795,150)
 
 SIEMENS
@@ -72,7 +76,7 @@ SIEMENS
   { [0008,0008].containsIgnoreCase("SECONDARY") * 
     [0008,0060].containsIgnoreCase("CT") * 
     [0008,0070].containsIgnoreCase("SIEMENS") * 
-    [0028,0010].containsIgnoreCase("860") }
+    Rows.equals("860") }
   (0,0,1132,60)
 
 PHILIPS
@@ -86,8 +90,8 @@ Toshiba Aquilion One CT Dose Series
     [0008,0070].containsIgnoreCase("TOSHIBA") *
     [0008,1090].containsIgnoreCase("Aquilion ONE") *
     [0008,0008].containsIgnoreCase("SECONDARY") *
-    [0028,0011].equals("512") *
-    [0028,0010].equals("512") *
+    Columns.equals("512") *
+    Rows.equals("512") *
     [0028,1051].equals("1") }
   (0,0,410,240)
 
@@ -100,116 +104,526 @@ SIEMENS
   { [0008,0070].containsIgnoreCase("SIEMENS") *
     [0008,1090].containsIgnoreCase("Sensation") *
     [0008,0008].containsIgnoreCase("PROT") *
-    [0028,0011].equals("512") *
-    [0028,0010].equals("512") *
+    Columns.equals("512") *
+    Rows.equals("512") *
     [6000,0022].containsIgnoreCase("Siemens MedCom Object Graphics") }
   (0,0,337,135)
   (338,67,107,16)
 
-**************
-     US
-**************
-GE 
- Logiq US
-  { [0008,1090].containsIgnoreCase("LOGIQ9") }
-  (0,0,640,40)
+***********************
+     US (modified)
+***********************
 
-  { [0008,1090].containsIgnoreCase("LOGIQE9") }
-  (0,0,960,70)
+// REG-US01 Acuson Sequoia 
+{ Modality.equals("US") *
+    [0008,0070].containsIgnoreCase("ACUSON") *
+    [0008,1090].containsIgnoreCase("SEQUOIA") *
+    Rows.equals("480") *
+    Columns.equals("640") }
+  (0,0,640,30) (553,30,87,16)
+  
+{ Modality.equals("US") *
+    [0008,0070].containsIgnoreCase("ACUSON") *
+    [0008,1090].containsIgnoreCase("SEQUOIA") *
+    Rows.equals("456") *
+    Columns.equals("576") }
+  (0,0,576,31) (493,31,83,17)
 
-  { [0008,1090].containsIgnoreCase("V830") }
-  (0,0,960,70)
+// REG-US02 Aloka SSD-ALPHA5
+Aloka
+ SSD-ALPHA5
+ { Modality.equals("US") *
+    [0008,0070].containsIgnoreCase("ALOKA") *
+    [0008,1090].containsIgnoreCase("SSD-ALPHA5") *
+    Rows.equals("480") *
+    Columns.equals("640") }
+  (0,0,640,25)
 
+// REG-US03 ATL
+ATL
+  { Modality.equals("US") *
+    [0008,0070].containsIgnoreCase("ATL") *
+    ([0008,1090].containsIgnoreCase("HDI 5000") + [0008,1090].containsIgnoreCase("HDI 3000")) *
+    Rows.equals("476") *
+    Columns.equals("640") }
+  (40,0,484,36) 
+
+GE
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("873") * Columns.equals("1552") }
+  (0,0,1195,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8") 
+    *Rows.equals("970") * Columns.equals("1552") }
+  (0,0,1174,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("819") * Columns.equals("1456") }
+  (0,0,1122,70)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("802") * Columns.equals("1442") }
+  (0,0,1000,32)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("748") * Columns.equals("1346") }
+  (0,0,1000,24)
+   
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("720") * Columns.equals("1280") }
+  (0,0,968,70) 
+   
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("649") * Columns.equals("1170") }
+  (0,0,880,24)   
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8") 
+    *Rows.equals("873") * Columns.equals("1164") }
+  (0,0,808,70)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("819") * Columns.equals("1092") }
+  (0,0,758,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8")
+    *Rows.equals("802") * Columns.equals("1054") }
+  (0,0,754,26)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8") 
+    *Rows.equals("720") * Columns.equals("960") }
+  (0,0,666,68)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8") 
+    *Rows.equals("649") * Columns.equals("850") }
+  (0,0,584,20)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS8") 
+    *Rows.equals("600") * Columns.equals("800") }
+  (0,0,850,64)
+
+  { ([0008,1090].containsIgnoreCase("LOGIQ S6") +
+    (ManufacturerModelName.equals("LOGIQS7") * SoftwareVersion.startsWith("LOGIQ S6")))
+    *Rows.equals("768") * Columns.equals("1024") }
+  (0,0,712,67)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS7") 
+    *Rows.equals("649") * Columns.equals("850") }
+  (0,0,592,26)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS7") 
+    *Rows.equals("720") * Columns.equals("960") }
+  (0,0,666,68)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQS7")
+    *Rows.equals("720") * Columns.equals("1280") }
+  (0,0,968,70)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQe")
+    *((Rows.equals("614") * Columns.equals("820"))
+     +(Rows.equals("590") * Columns.equals("819"))) }
+  (0,0,568,55)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQi")
+    *Rows.equals("600") * Columns.equals("800") }
+  (0,0,554,57)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("970") * Columns.equals("1552") }
+  (0,0,1174,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("873") * Columns.equals("1552") }
+  (0,0,1196,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("819") * Columns.equals("1456") }
+  (0,0,1122,70)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("899") * Columns.equals("1442") }
+  (0,0,1000,32)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("802") * Columns.equals("1442") }
+  (0,0,1000,32)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("748") * Columns.equals("1346") }
+  (0,0,1000,24)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("768") * Columns.equals("1280") }
+  (0,0,826,92)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("720") * Columns.equals("1280") }
+  (0,0,968,70)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("649") * Columns.equals("1170") }
+  (0,0,880,24)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("873") * Columns.equals("1164") }
+  (0,0,808,70)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("819") * Columns.equals("1092") }
+  (0,0,758,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9")
+    *Rows.equals("802") * Columns.equals("1054") }
+  (0,0,700,30)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("720") * Columns.equals("960") }
+  (0,0,666,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("748") * Columns.equals("982") }
+  (0,0,670,28)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("649") * Columns.equals("850") }
+  (0,0,595,26)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("649") * Columns.equals("852") }
+  (0,0,595,26)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQE9") 
+    *Rows.equals("614") * Columns.equals("820") }
+  (0,0,568,55)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQP5") 
+    *Rows.equals("614") * Columns.equals("816") }
+  (0,0,566,60)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQP6") 
+    *Rows.equals("614") * Columns.equals("816") }
+  (0,0,566,60)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQP9") 
+    *Rows.equals("856") * Columns.equals("1142") }
+  (0,0,794,68)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ 400") 
+    *Rows.equals("462") * Columns.equals("608") }
+  (0,0,608,31)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ 500") 
+    *Rows.equals("462") * Columns.equals("608") }
+  (0,0,608,31)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ 700") 
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,640,41)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ5") 
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,444,44)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ7")
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,444,44)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ7") 
+    *Rows.equals("768") * Columns.equals("1024") }
+  (0,0,712,70)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ9") 
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,444,44)
+
+  // Only the secondary captures need scrubbing  
+  // This is here for when we have support for secondary
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ9") 
+    *Rows.equals("600") * Columns.equals("800")
+    *SOPClassUID.equals("1.2.840.10008.5.1.4.1.1.7") }
+  (0,0,605,44)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("LOGIQ9") 
+    *Rows.equals("768") * Columns.equals("1024") }
+  (0,0,712,67)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivide") 
+    *Rows.equals("614") * Columns.equals("820") }
+  (0,0,568,55)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid i") 
+    *Rows.equals("422") * Columns.equals("636") }
+  (0,0,220,25)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid i") 
+    *Rows.equals("434") * Columns.equals("636") }
+  (0,0,280,24)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid S5") 
+    *Rows.equals("422") * Columns.equals("636") }
+  (0,0,220,25)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid S6") 
+    *Rows.equals("422") * Columns.equals("636") }
+  (0,0,220,25)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid S6") 
+    *Rows.equals("434") * Columns.equals("636") }
+  (0,0,280,24)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid7") 
+    *Rows.equals("434") * Columns.equals("636") }
+  (0,0,280,24)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid7") 
+    *Rows.equals("484") * Columns.equals("636") }
+  (0,0,584,48)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid q") 
+    *Rows.equals("422") * Columns.equals("636") }
+  (0,0,220,25)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid q") 
+    *Rows.equals("434") * Columns.equals("636") }
+  (0,0,280,24)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid E9") 
+    *Rows.equals("759") * Columns.equals("1020") }
+  (0,0,800,48)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid E9") 
+    *Rows.equals("434") * Columns.equals("636") }
+  (0,0,280,24)
+  
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid E9") 
+    *Rows.equals("484") * Columns.equals("636") }
+  (0,0,584,48)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,640,48)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid E95")
+    *Rows.equals("708") * Columns.equals("1016") }
+  (0,0,400,56)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid 3") 
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,392,32)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Vivid 3") 
+    *Rows.equals("434") * Columns.equals("636") }
+  (0,0,280,24)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Voluson P") 
+    *Rows.equals("600") * Columns.equals("800") }
+  (0,0,800,56)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Voluson S") 
+    *Rows.equals("743") * Columns.equals("975") }
+  (0,0,975,72)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("Voluson E8") 
+    *Rows.equals("852") * Columns.equals("1136") }
+  (0,0,1136,64)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("480") * Columns.equals("640") }
+  (0,0,392,32)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830")
+    *Rows.equals("600") * Columns.equals("800") }
+  (0,0,800,56)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830")
+    *Rows.equals("650") * Columns.equals("868") }
+  (0,0,868,48)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("662") * Columns.equals("930") }
+  (0,0,930,64)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("720") * Columns.equals("960") }
+  (0,0,960,56)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("735") * Columns.equals("960") }
+  (0,0,960,72)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("735") * Columns.equals("975") }
+  (0,0,975,72)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("743") * Columns.equals("975") }
+  (0,0,975,72)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("682") * Columns.equals("1134") }
+  (0,0,1134,56)
+
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("V830") 
+    *Rows.equals("852") * Columns.equals("1136") }
+  (0,0,1136,64)
 
 Philips 
  IU22
-  { [0008,1090].containsIgnoreCase("iU22") *
-    [0028,0010].containsIgnoreCase("480") }
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("iU22") *
+    Rows.equals("480") }
   (0,0,640,47)
 
  IU22
-  { [0008,1090].containsIgnoreCase("iU22") *
-    [0028,0010].containsIgnoreCase("768") }
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("iU22") *
+    Rows.equals("768") }
   (0,0,1024,75)
 
 
  IU22
-  { [0008,1090].containsIgnoreCase("iU22") *
-    [0028,0010].containsIgnoreCase("600") }
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("iU22") *
+    Rows.equals("600") }
   (0,0,800,59)
 
  EPIQ 7G
-  { [0008,1090].containsIgnoreCase("EPIQ") *
-    [0028,0010].containsIgnoreCase("600") }
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("EPIQ") *
+    Rows.equals("600") }
   (0,0,800,59)
 
  EPIQ 7G
-  { [0008,1090].containsIgnoreCase("EPIQ") *
-    [0028,0010].containsIgnoreCase("768") }
+  { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("EPIQ") *
+    Rows.equals("768") }
   (0,0,800,59)
 
   CX50
-   { [0008,1090].containsIgnoreCase("CX50") *
-    [0028,0010].containsIgnoreCase("600") }
+   { Modality.equals("US") *
+    [0008,1090].containsIgnoreCase("CX50") *
+    Rows.equals("600") }
   (0,0,800,59)
 
 Zonare
-  { [0008,1090].containsIgnoreCase("Z_ONE") }
-  (0,0,800,65)
-  
-ATL
   { Modality.equals("US") *
-    [0008,0070].containsIgnoreCase("ATL") *
-    [0008,1090].containsIgnoreCase("HDI 5000") *
-    [0028,0010].equals("476") *
-    [0028,0011].equals("640") }
-  (40,0,200,40) (240,0,190,16)
+    [0008,1090].containsIgnoreCase("Z_ONE") }
+  (0,0,800,65)
   
 Siemens
 { Modality.equals("US") *
     [0008,0070].containsIgnoreCase("SIEMENS") *
     [0008,1090].containsIgnoreCase("SC2000") *
     [0008,0008].containsIgnoreCase("SECONDARY") *
-    [0028,0010].equals("768") *
-    [0028,0011].equals("1024") }
+    Rows.equals("768") *
+    Columns.equals("1024") }
   (230,50,260,370)
 
 { Modality.equals("US") *
     [0008,0070].containsIgnoreCase("SIEMENS") *
     [0008,1090].containsIgnoreCase("ANTARES") *
-    [0028,0010].equals("768") *
-    [0028,0011].equals("1024") }
+    Rows.equals("768") *
+    Columns.equals("1024") }
   (0,0,1024,60) (200,60,20,20) (800,65,104,14) 
 
 { Modality.equals("US") *
     [0008,0070].containsIgnoreCase("SIEMENS") *
     [0008,1090].containsIgnoreCase("ACUSON") *
-    [0028,0010].equals("600") *
-    [0028,0011].equals("800") }
+    Rows.equals("600") *
+    Columns.equals("800") }
   (0,0,800,43) (128,56,16,16)
-
-Acuson
-{ Modality.equals("US") *
-    [0008,0070].containsIgnoreCase("ACUSON") *
-    [0008,1090].containsIgnoreCase("SEQUOIA") *
-    [0028,0010].equals("480") *
-    [0028,0011].equals("640") }
-  (0,0,640,30)
 
 Toshiba Aplio 500
   { Modality.equals("US") *
     [0008,0070].containsIgnoreCase("TOSHIBA") *
     [0008,1090].containsIgnoreCase("A500") *
-    [0028,0010].equals("720") *
-    [0028,0011].equals("960") }
+    Rows.equals("720") *
+    Columns.equals("960") }
   (0,0,960,60)
 
 Toshiba Aplio 400
   { Modality.equals("US") *
     [0008,0070].containsIgnoreCase("TOSHIBA") *
     [0008,1090].containsIgnoreCase("A400") *
-    [0028,0010].equals("720") *
-    [0028,0011].equals("960") }
+    Rows.equals("720") *
+    Columns.equals("960") }
   (0,0,960,60)
 
 Supersonic Imagine 5A
@@ -231,7 +645,7 @@ Supersonic Imagine 5A
 Canon
   { [0008,0070].containsIgnoreCase("Canon") * 
     [0008,1090].containsIgnoreCase("CXDI") * 
-    [0028,0010].containsIgnoreCase("2592") }
+    Rows.equals("2592") }
   (0,0,2208,80) (0,2512,2208,80)
 
 **************
@@ -242,7 +656,7 @@ SIEMENS
   { [0008,0008].containsIgnoreCase("SECONDARY") * 
     [0008,0060].containsIgnoreCase("NM") * 
     [0008,0070].containsIgnoreCase("SIEMENS") * 
-    [0028,0010].containsIgnoreCase("860") }
+    Rows.equals("860") }
   (0,0,1132,82) (0,780,1132,80)
 
 **************
@@ -251,14 +665,14 @@ SIEMENS
 
 ADAC
   { [0008,0070].containsIgnoreCase("ADAC") *
-    [0028,0010].containsIgnoreCase("832") *
-    [0028,0011].containsIgnoreCase("1024") }
+    Rows.equals("832") *
+    Columns.equals("1024") }
   (0,0,1024,60) (0,762,1024,80)
  
 MEDRAD Injection Profile
   { [0008,103e].containsIgnoreCase("MEDRAD") *
-    [0028,0010].equals("1077") *
-    [0028,0011].equals("750") }
+    Rows.equals("1077") *
+    Columns.equals("750") }
   (0,0,750,230)
 
 **********************
@@ -271,9 +685,9 @@ MEDRAD Injection Profile
 
 // REG-PCT01 - GE PT/CT fusion series
 { (Modality.equals("PT") + Modality.equals("OT")) * 
-	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
-	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
-	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
+    Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
+    ManufacturerModelName.startsWithIgnoreCase("Discovery") *
+    [0018,1018].startsWithIgnoreCase("Volume Viewer") *
   ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
   (Rows.equals("512") * Columns.equals("512"))
 }
@@ -283,9 +697,9 @@ MEDRAD Injection Profile
 
 // REG-PCT02 GE - PT/CT fusion series
 { (Modality.equals("PT") + Modality.equals("OT")) * 
-	Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
-	ManufacturerModelName.startsWithIgnoreCase("Discovery") *
-	[0018,1018].startsWithIgnoreCase("Volume Viewer") *
+    Manufacturer.startsWithIgnoreCase("GE MEDICAL") *
+    ManufacturerModelName.startsWithIgnoreCase("Discovery") *
+    [0018,1018].startsWithIgnoreCase("Volume Viewer") *
   ([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4")) *
   (Columns.equals("256") * Rows.equals("512"))
 }
@@ -293,9 +707,9 @@ MEDRAD Injection Profile
 
 // REG-PCT03 Philips PT/CT fusion
 { Modality.equals("PT") * 
-	Manufacturer.startsWithIgnoreCase("Philips") *
-	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
-	[0018,1018].startsWithIgnoreCase("EBW") *
+    Manufacturer.startsWithIgnoreCase("Philips") *
+    ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+    [0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
   (Columns.equals("638") * Rows.equals("839"))
 }
@@ -303,9 +717,9 @@ MEDRAD Injection Profile
 
 // REG-PCT04 Philips PT/CT fusion
 { Modality.equals("PT") * 
-	Manufacturer.startsWithIgnoreCase("Philips") *
-	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
-	[0018,1018].startsWithIgnoreCase("EBW") *
+    Manufacturer.startsWithIgnoreCase("Philips") *
+    ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+    [0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
   (Columns.equals("453") * Rows.equals("918"))
 }
@@ -313,9 +727,9 @@ MEDRAD Injection Profile
 
 // REG-PCT05 Philips PT/CT fusion
 { Modality.equals("PT") * 
-	Manufacturer.startsWithIgnoreCase("Philips") *
-	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
-	[0018,1018].startsWithIgnoreCase("EBW") *
+    Manufacturer.startsWithIgnoreCase("Philips") *
+    ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+    [0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
   (Columns.equals("546") * Rows.equals("918"))
 }
@@ -323,9 +737,9 @@ MEDRAD Injection Profile
 
 // REG-PCT06 Philips PT/CT fusion
 { Modality.equals("PT") * 
-	Manufacturer.startsWithIgnoreCase("Philips") *
-	ManufacturerModelName.startsWithIgnoreCase("Guardian") *
-	[0018,1018].startsWithIgnoreCase("EBW") *
+    Manufacturer.startsWithIgnoreCase("Philips") *
+    ManufacturerModelName.startsWithIgnoreCase("Guardian") *
+    [0018,1018].startsWithIgnoreCase("EBW") *
   [0018,1020].startsWithIgnoreCase("9.3.1") *
   (Columns.equals("638") * Rows.equals("907"))
 }
@@ -337,56 +751,56 @@ MEDRAD Injection Profile
 
 // REG-XR01 Canon CXDI
 { (Modality.equals("CR") + Modality.equals("DX")) * 
-	Manufacturer.containsIgnoreCase("Canon") *
-	ManufacturerModelName.startsWithIgnoreCase("CXDI") *
-	([0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("2.")) }
+    Manufacturer.containsIgnoreCase("Canon") *
+    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+    ([0018,1020].startsWithIgnoreCase("V4") + [0018,1020].startsWithIgnoreCase("V6") + [0018,1020].startsWithIgnoreCase("2.")) }
 (0,0,10000,104) 
 
 // REG-XR02 Canon AXIOM
 { Modality.equals("CR") * 
-	Manufacturer.containsIgnoreCase("Canon") *
-	ManufacturerModelName.startsWithIgnoreCase("AXIOM") *
-	[0018,1020].startsWithIgnoreCase("V6") }
+    Manufacturer.containsIgnoreCase("Canon") *
+    ManufacturerModelName.startsWithIgnoreCase("AXIOM") *
+    [0018,1020].startsWithIgnoreCase("V6") }
 (0,0,10000,115)
 
 // REG-XR03 KONICA 0402
 { Modality.equals("CR") * 
-	Manufacturer.containsIgnoreCase("KONICA") *
-	ManufacturerModelName.containsIgnoreCase("0402") *
-	[0018,1020].startsWithIgnoreCase("6.") *
-	Rows.equals("2446") * Columns.equals("2446") }
+    Manufacturer.containsIgnoreCase("KONICA") *
+    ManufacturerModelName.containsIgnoreCase("0402") *
+    [0018,1020].startsWithIgnoreCase("6.") *
+    Rows.equals("2446") * Columns.equals("2446") }
 (0,2308,2446,137)
 
 // REG-XR04 KONICA 0402
 { Modality.equals("CR") * 
-	Manufacturer.containsIgnoreCase("KONICA") *
-	ManufacturerModelName.containsIgnoreCase("0402") *
-	[0018,1020].startsWithIgnoreCase("2.") *
-	Rows.equals("2010") * Columns.equals("2446") }
+    Manufacturer.containsIgnoreCase("KONICA") *
+    ManufacturerModelName.containsIgnoreCase("0402") *
+    [0018,1020].startsWithIgnoreCase("2.") *
+    Rows.equals("2010") * Columns.equals("2446") }
 (0,0,2446,115)
 
 
 // REG-XR05 SHIMADZU CXDI
 { Modality.equals("CR") * 
-	Manufacturer.startsWithIgnoreCase("Shimadzu") *
-	ManufacturerModelName.startsWithIgnoreCase("CXDI") *
-	[0018,1020].startsWithIgnoreCase("2.") }
+    Manufacturer.startsWithIgnoreCase("Shimadzu") *
+    ManufacturerModelName.startsWithIgnoreCase("CXDI") *
+    [0018,1020].startsWithIgnoreCase("2.") }
 (0,0,10000,90)
 
 // REG-XR06 Cuattro CloudDR
 { Modality.equals("DX") * 
-	Manufacturer.startsWithIgnoreCase("Cuattro") *
-	ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
-	[0018,1020].startsWithIgnoreCase("3.")  *
-	Rows.equals("3072") * Columns.equals("3072") }
+    Manufacturer.startsWithIgnoreCase("Cuattro") *
+    ManufacturerModelName.startsWithIgnoreCase("CloudDR") *
+    [0018,1020].startsWithIgnoreCase("3.")  *
+    Rows.equals("3072") * Columns.equals("3072") }
 (2500,0,572,400)
 
 // REG-XR07 Medlink Imaging 
 { Modality.equals("DX") * 
-	Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
-	ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
-	[0018,1020].startsWithIgnoreCase("1.") *
-	Rows.equals("2922") * Columns.equals("1936") }
+    Manufacturer.startsWithIgnoreCase("Medlink Imaging") *
+    ManufacturerModelName.startsWithIgnoreCase("AltoDR") *
+    [0018,1020].startsWithIgnoreCase("1.") *
+    Rows.equals("2922") * Columns.equals("1936") }
 (0,0,1936,50)
 
 // REG-XR08 MedicaTechUSA

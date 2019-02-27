@@ -1,4 +1,4 @@
-# Dockerfile for running anonymizer on a Mac with full native Image-IO support
+# Dockerfile for running CTP DicomAnonymizerTool with required dependencies
 FROM openjdk:8
 
 ENV HOME /app
@@ -13,5 +13,4 @@ RUN chmod +x /app/lib/*.bin
 RUN echo yes | /app/lib/jai-1_1_3-lib-linux-amd64-jdk.bin
 RUN echo yes | /app/lib/jai_imageio-1_1-lib-linux-amd64-jdk.bin 
 
-#ENTRYPOINT ["java","-Dlog4j.configuration=file:/app/log4j.xml","-jar","/app/DAT/DAT.jar"]
-ENTRYPOINT ["java","-jar","/app/DAT/DAT.jar"]
+CMD ["java","-cp","/app/DAT/*","org.rsna.dicomanonymizertool.DicomAnonymizerTool"]
