@@ -73,6 +73,7 @@
 
   // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed but be careful of dose
   +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
+   *(!ImageType.contains("PROT"))
    *(
      (ManufacturerModelName.containsIgnoreCase("Biograph 6") * [0018,1020].containsIgnoreCase("syngo CT 2006"))
     +(ManufacturerModelName.containsIgnoreCase("Somaris/5 3D") * [0018,1020].containsIgnoreCase("VA45A-W")) 
@@ -181,10 +182,9 @@
      )
 
      //////////////////
-     // GE Ultrasound
+     // GE
      //
      +((Manufacturer.startsWith("GE")+Manufacturer.startsWith("G.E."))
-
       // SOP Class whitelists for all GE models
       *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6") 
        +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
