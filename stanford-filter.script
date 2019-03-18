@@ -163,23 +163,463 @@
   // Ultrasound 
   +(Modality.contains("US")
    *(
-     (Manufacturer.equalsIgnoreCase("ACUSON") * ManufacturerModelName.containsIgnoreCase("SEQUOIA")
-      *!ImageType.equals("ORIGINAL\PRIMARY\\0000")
+   
+     //////////////////
+     // ACUSON
+     //
+     (Manufacturer.equalsIgnoreCase("ACUSON")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+      )
+   
+      // Demographic/report data and screenshots 
+      *!(ImageType.contains("ORIGINAL\PRIMARY\\0000")
+        +ImageType.contains("DERIVED\SECONDARY\\0000"))
+
       *(
-        (Rows.equals("480") * Columns.equals("640"))
-       +(Rows.equals("456") * Columns.equals("576"))
+        // SEQUOIA
+        (ManufacturerModelName.containsIgnoreCase("SEQUOIA")
+         *((Rows.equals("768") * Columns.equals("1024"))
+          +(Rows.equals("480") * Columns.equals("640"))
+          +(Rows.equals("576") * Columns.equals("768"))
+          +(Rows.equals("456") * Columns.equals("576"))
+         )
+        )
+
+        // Cypress
+        // Report (screenshots) do not contain Ultrasound sequence
+        +(ManufacturerModelName.containsIgnoreCase("Cypress")
+         *(!SeqOfUltrasoundRegions::RegionDataType.equals(""))
+         *(Rows.equals("480") * Columns.equals("640"))
+        )
+
+       
       )
      )
      
-     +(Manufacturer.containsIgnoreCase("ALOKA") * ManufacturerModelName.equalsIgnoreCase("SSD-ALPHA5")
-      *!ImageType.equals("ORIGINAL\PRIMARY\\0000")
-      *Rows.equals("480") * Columns.equals("640")
+     //////////////////
+     // Aloka
+     //
+     +(Manufacturer.containsIgnoreCase("Aloka")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3"))
+
+      // Screenshots
+      *(!SeqOfUltrasoundRegions::RegionDataType.equals("")) 
+
+      *(
+
+       // Alpha
+       ((ManufacturerModelName.containsIgnoreCase("SSD-ALPHA5")
+        +ManufacturerModelName.containsIgnoreCase("SSD-ALPHA6")
+        +ManufacturerModelName.containsIgnoreCase("SSD-ALPHA7")
+        +ManufacturerModelName.containsIgnoreCase("SSD-ALPHA10")
+        +ManufacturerModelName.containsIgnoreCase("SSD-5500")
+        )
+        *((Rows.equals("600") * Columns.equals("800"))
+         +(Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("420") * Columns.equals("608"))
+         +(Rows.equals("480") * Columns.equals("686"))
+        )
+       )
+
+       // Hitachi Noblus
+       +(ManufacturerModelName.containsIgnoreCase("Noblus")
+        *(Rows.equals("600") * Columns.equals("800"))
+       )
+
+       // Hitachi ProSound F75
+       +(ManufacturerModelName.containsIgnoreCase("ProSound F75")
+        *((Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("768") * Columns.equals("1024"))
+        )
+       )
+
+
+      )
+     )
+     
+     
+     //////////////////
+     // ATL
+     //
+     // not supported due to screenshots that are not detectable via DICOM tags
+
+   
+     //////////////////
+     // B-K Medical
+     //
+     +((Manufacturer.equalsIgnoreCase("B-K Medical")+Manufacturer.equalsIgnoreCase("BK Medical"))
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+      )
+
+      *(
+        // 2202
+        (ManufacturerModelName.equals("2202")
+         *((Rows.equals("818") * Columns.equals("1020"))
+          +(Rows.equals("480") * Columns.equals("640"))
+         )
+        )
+
+        // 1202
+        +(ManufacturerModelName.equals("1202")
+         *((Rows.equals("1072") * Columns.equals("1024"))
+          +(Rows.equals("780") * Columns.equals("800")) // no phi
+         )
+        )
+        
+        // 2300
+        +(ManufacturerModelName.equals("2300")
+         *((Rows.equals("1072") * Columns.equals("1024"))
+          +(Rows.equals("802") * Columns.equals("992"))
+         )
+        )
+      )
      )
 
-     +(Manufacturer.containsIgnoreCase("ATL") * (ManufacturerModelName.equalsIgnoreCase("HDI 5000")+ManufacturerModelName.equalsIgnoreCase("HDI 3000"))
-      *!InstanceNumber.equals("0") // Demographics screen not detectable via DICOM tags 
-      *Rows.equals("476") * Columns.equals("640")
+
+     //////////////////
+     // Philips
+     //
+     +(Manufacturer.containsIgnoreCase("Philips")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.7")
+      )
+
+      // Screenshots
+      *!ImageType.containsIgnoreCase("INVALID")
+      *(!SeqOfUltrasoundRegions::RegionDataType.equals("")) 
+
+      *(
+       
+       // iU22, iE33
+       ((ManufacturerModelName.equals("iU22")
+        +ManufacturerModelName.equals("iE33"))
+        *((Rows.equals("768") * Columns.equals("1024"))
+         +(Rows.equals("600") * Columns.equals("800"))
+         +(Rows.equals("480") * Columns.equals("640"))
+        )
+       )
+       
+       // EPIQ, Affiniti 
+       +((ManufacturerModelName.containsIgnoreCase("EPIQ") 
+         +ManufacturerModelName.containsIgnoreCase("Affiniti"))
+        *((Rows.equals("1080") * Columns.equals("1920"))
+         +(Rows.equals("768") * Columns.equals("1024"))
+         +(Rows.equals("600") * Columns.equals("800"))
+        )
+       )
+
+       // CX50, CX30, HD15, ClearVue 550
+       +((ManufacturerModelName.equals("CX50")
+         +ManufacturerModelName.equals("CX30")
+         +ManufacturerModelName.equals("Sparq")
+         +ManufacturerModelName.equals("HD15")
+         +ManufacturerModelName.equals("ClearVue 550"))
+        *Rows.equals("600") * Columns.equals("800")
+       )
+       
+       // Lumify (no PHI), VT
+       +((ManufacturerModelName.equals("Lumify")
+         +ManufacturerModelName.equals("VT"))
+        *Rows.equals("768") * Columns.equals("1024")
+       )
+       
+      )
      )
+     
+     
+     //////////////////
+     // Toshiba
+     //
+     +(Manufacturer.containsIgnoreCase("Toshiba")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+      )
+
+      *(
+       
+       // TUS-Ax00 (Aplio), SSH-880CV
+       ((ManufacturerModelName.containsIgnoreCase("A500")
+        +ManufacturerModelName.containsIgnoreCase("A300")
+        +ManufacturerModelName.containsIgnoreCase("A400")
+        +ManufacturerModelName.containsIgnoreCase("TUS-X200")
+        +ManufacturerModelName.containsIgnoreCase("SSH-880CV"))
+        *Rows.equals("720") * Columns.equals("960")
+       )
+
+       // TUS-AI700
+       +((ManufacturerModelName.containsIgnoreCase("AI700"))
+        *Rows.equals("960") * Columns.equals("1280")
+       )
+
+       // Aplio, Xario series
+       +((ManufacturerModelName.containsIgnoreCase("Aplio")
+         +ManufacturerModelName.containsIgnoreCase("Xario"))
+         *((Rows.equals("600") * Columns.equals("800"))
+          +(Rows.equals("537") * Columns.equals("716"))
+        )
+       )
+
+       // Viamo
+       +(ManufacturerModelName.containsIgnoreCase("Viamo")
+         *((Rows.equals("600") * Columns.equals("800"))
+        )
+       )
+
+
+      )
+     )
+     
+     
+     //////////////////
+     // SonoSite
+     //
+     +(Manufacturer.containsIgnoreCase("SonoSite")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3"))
+
+      // Screenshots, except Titan
+      *(!SeqOfUltrasoundRegions::RegionDataType.equals("") 
+        +ManufacturerModelName.containsIgnoreCase("Titan")) 
+
+      *(
+  
+       // Turbo, MicroMAXX
+       ((ManufacturerModelName.containsIgnoreCase("Turbo")
+        +ManufacturerModelName.containsIgnoreCase("MicroMAXX")
+        +ManufacturerModelName.containsIgnoreCase("Nano")
+        +ManufacturerModelName.containsIgnoreCase("Edge II")
+        +ManufacturerModelName.containsIgnoreCase("Titan"))
+        *Rows.equals("480") * Columns.equals("640")
+       )
+
+       // X-Porte
+       +((ManufacturerModelName.containsIgnoreCase("X-Porte"))
+        *Rows.equals("720") * Columns.equals("960")
+       )
+
+
+      )
+     )
+     
+     
+     //////////////////
+     // Zonare
+     //
+     +(Manufacturer.containsIgnoreCase("Zonare")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3"))
+
+      // Screenshots
+      *(!ImageType.containsIgnoreCase("PATIENTINFO")) 
+      
+      *((ManufacturerModelName.containsIgnoreCase("Z_ONE")
+        +ManufacturerModelName.containsIgnoreCase("ZS3")
+        +ManufacturerModelName.containsIgnoreCase("ZS3"))
+        *((Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("600") * Columns.equals("800")))
+      )
+     )
+     
+           
+     //////////////////
+     // SIEMENS
+     //
+     +(Manufacturer.containsIgnoreCase("SIEMENS")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.7")
+      )
+
+      // Demographic/report data and screenshots contain 0000 in ImageType
+      *(!ImageType.contains("0000")) 
+
+      *(
+       
+       // S1000
+       (ManufacturerModelName.equals("S1000")
+        *((Rows.equals("768") * Columns.equals("1024"))
+        )
+       )
+       
+       // S2000
+       +(ManufacturerModelName.equals("S2000")
+        *((Rows.equals("768") * Columns.equals("1024"))
+         +(Rows.equals("600") * Columns.equals("800")) 
+         
+         // Only multi-frame has been validated for the following
+         +(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+          *((Rows.equals("463") * Columns.equals("707")) 
+           +(Rows.equals("183") * Columns.equals("162")) 
+          )
+         )
+        ) 
+       )
+
+       // S3000
+       +(ManufacturerModelName.equals("S3000")
+        *((Rows.equals("768") * Columns.equals("1024"))
+        )
+       )
+
+       // Antares
+       +(ManufacturerModelName.equals("Antares")
+
+        *((Rows.equals("768") * Columns.equals("1024"))
+         +(Rows.equals("600") * Columns.equals("800")) 
+         // Only multi-frame has been validated for the following
+         +(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+          *((Rows.equals("547") * Columns.equals("692")) 
+          )
+         )
+        )
+       )
+
+       // Acuson X150, X300, X700, P500
+       +((ManufacturerModelName.equalsIgnoreCase("X150")
+         +ManufacturerModelName.equalsIgnoreCase("Acuson X300")
+         +ManufacturerModelName.equalsIgnoreCase("Acuson X700")
+         +ManufacturerModelName.equalsIgnoreCase("Acuson P500")
+         )
+        *!(ImageType.equals("ORIGINAL\PRIMARY")+ImageType.equals("DERIVED\PRIMARY")) // screenshots
+        *((Rows.equals("600") * Columns.equals("800")
+          +Rows.equals("768") * Columns.equals("1024"))
+         )
+       )
+
+       // Acuson SC2000
+       +(ManufacturerModelName.equalsIgnoreCase("ACUSON SC2000")
+        *(!SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.7")) // report / demographics
+        *((Rows.equals("768") * Columns.equals("1024"))
+        )
+       )
+
+       // Acuson Freestyle
+       +(ManufacturerModelName.equalsIgnoreCase("ACUSON Freestyle")
+        *((Rows.equals("656") * Columns.equals("800"))
+         +(Rows.equals("664") * Columns.equals("800"))
+        )
+       )
+
+       // Elegra
+       +(ManufacturerModelName.equalsIgnoreCase("ELEGRA")
+        *((Rows.equals("666") * Columns.equals("888"))
+        )
+       )
+
+       // G50 S, G60 S
+       +((ManufacturerModelName.equalsIgnoreCase("G60 S")
+         +ManufacturerModelName.equalsIgnoreCase("G50 S")
+        )
+        *(!PixelSpacing.equals("")) // Screenshots
+        *((Rows.equals("547") * Columns.equals("692"))
+         +(Rows.equals("480") * Columns.equals("640"))
+         +(Rows.equals("480") * Columns.equals("640"))
+        )
+       )
+
+       // G40
+       +(ManufacturerModelName.equalsIgnoreCase("G40")
+         *(!PixelSpacing.equals("")) // Screenshots? 
+         *(Rows.equals("600") * Columns.equals("800"))
+       )
+
+
+      )
+     )
+
+     ///////////////////////
+     // SuperSonic Imagine
+     //
+     +(Manufacturer.containsIgnoreCase("SuperSonic")
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+      )
+
+      // Screenshots
+      *(!SeqOfUltrasoundRegions::RegionDataType.equals("")) 
+
+      *(
+        // 2202
+        (ManufacturerModelName.equals("Aixplorer")
+         *((Rows.equals("1080") * Columns.equals("1440"))
+          +(Rows.equals("1050") * Columns.equals("1400"))
+          +(Rows.equals("930") * Columns.equals("1240"))
+          +(Rows.equals("900") * Columns.equals("1200"))
+          +(Rows.equals("894") * Columns.equals("1192"))
+          +(Rows.equals("819") * Columns.equals("1092"))
+          +(Rows.equals("816") * Columns.equals("1088"))
+          +(Rows.equals("812") * Columns.equals("1082"))
+          +(Rows.equals("810") * Columns.equals("1080"))
+          +(Rows.equals("788") * Columns.equals("1050"))
+          +(Rows.equals("782") * Columns.equals("1042"))
+          +(Rows.equals("776") * Columns.equals("1035"))
+          +(Rows.equals("638") * Columns.equals("851"))
+          +(Rows.equals("525") * Columns.equals("700"))
+         )
+        )
+      )
+     )
+
+
+     ///////////////////////
+     // Samsung / Medison
+     //
+     +(Manufacturer.containsIgnoreCase("MEDISON")
+
+      // SOP Class whitelists
+      *(SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.6")
+       +SOPClassUID.startsWith("1.2.840.10008.5.1.4.1.1.3")
+      )
+      
+      // Screenshots
+      *(!SeqOfUltrasoundRegions::RegionDataType.equals("")) 
+
+      *(
+        // RS80A
+        (ManufacturerModelName.equals("RS80A")
+         *((Rows.equals("872") * Columns.equals("1280"))
+          +(Rows.equals("872") * Columns.equals("1152"))
+         )
+        )
+        
+        // ACCUVIX
+        +(ManufacturerModelName.equals("ACCUVIX")
+         *(Rows.equals("480") * Columns.equals("640"))
+        )
+
+        // H60
+        +(ManufacturerModelName.equals("H60")
+         *(Rows.equals("720") * Columns.equals("960"))
+        )
+
+        // ACCUVIX v series
+        +((ManufacturerModelName.equals("Accuvix V10")
+          +ManufacturerModelName.equals("Accuvix V20")
+          +ManufacturerModelName.equals("Accuvix XG"))
+         *(Rows.equals("768") * Columns.equals("1024"))
+        )
+
+        // SonoAce R7, X8
+        +((ManufacturerModelName.equals("SonoAce R7") + ManufacturerModelName.equals("SonoAce X8"))
+         *(Rows.equals("768") * Columns.equals("1024"))
+        )
+
+      )
+     )
+
 
      //////////////////
      // GE
@@ -528,9 +968,6 @@
   
   // Encapsulated PDF
   +[0008,0016].equals("1.2.840.10008.5.1.4.1.1.104.1") 
-
-  // Conversion type is not empty
-  +!ConversionType.equals("")
   
   // the DiCOM box has no ImageType and ComputedRadiographyImageStorage SOPClassUID 
   // So we can only go by the model name. These are video captures.
@@ -558,14 +995,16 @@
   +Manufacturer.containsIgnoreCase("KUBTEC")
   +(Manufacturer.containsIgnoreCase("Hologic") * ManufacturerModelName.containsIgnoreCase("Trident"))
   
-  // 
-  // Sorry, no DERIVED or SECONDARY or NULL Image Types. These must be whitelisted by device.
-  // 
   +SOPClassUID.containsIgnoreCase("1.2.840.10008.5.1.4.1.1.7") // Secondary capture
-  +ImageType.containsIgnoreCase("DERIVED") 
-  +ImageType.containsIgnoreCase("SECONDARY") 
   +ImageType.equals("") 
   +BurnedInAnnotation.equalsIgnoreCase("YES")
 
+  // If not CR or DR, be careful about WSD and DERIVED/SECONDARY
+  +((!Modality.equals("CR") * !Modality.equals("DR") * !Modality.equals("DX"))
+    *(!ConversionType.equals("")
+      +ImageType.containsIgnoreCase("DERIVED") 
+      +ImageType.containsIgnoreCase("SECONDARY") 
+    )
+  )
 
 )
