@@ -74,6 +74,8 @@
   // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed but be careful of dose
   +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
    *(!ImageType.contains("PROT"))
+   *(!BurnedInAnnotation.equalsIgnoreCase("YES"))
+   *(!ImageType.contains("SCREEN"))
    *(
      (ManufacturerModelName.containsIgnoreCase("Biograph 6") * [0018,1020].containsIgnoreCase("syngo CT 2006"))
     +(ManufacturerModelName.containsIgnoreCase("Somaris/5 3D") * [0018,1020].containsIgnoreCase("VA45A-W")) 

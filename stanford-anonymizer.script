@@ -641,6 +641,7 @@
  <e en="F" t="00189236" n="CardiacMotionStatus"></e>
  <e en="F" t="00189239" n="SpecificAbsorptionRateSeq"></e>
  <e en="T" t="00189424" n="AcquisitionProtocolDescription">@remove()</e>
+ <e en="T" t="00189506" n="ContributingSourcesSequence">@remove()</e>
  <e en="T" t="00189516" n="StartAcquisitionDateTime">@if(this,exists){@incrementdate(this,@JITTER)}{}</e>
  <e en="T" t="00189517" n="EndAcquisitionDateTime">@if(this,exists){@incrementdate(this,@JITTER)}{}</e>
  <e en="T" t="0018a003" n="ContributionDescription">@remove()</e>
@@ -917,9 +918,9 @@
  <e en="F" t="00400330" n="RefProcedureStepSeq"></e>
  <e en="F" t="00400340" n="PerformedSeriesSeq"></e>
  <e en="F" t="00400400" n="SPSComments"></e>
- <e en="F" t="0040050a" n="SpecimenAccessionNumber"></e>
- <e en="F" t="00400550" n="SpecimenSeq"></e>
- <e en="F" t="00400551" n="SpecimenIdentifier"></e>
+ <e en="T" t="0040050a" n="SpecimenAccessionNumber"></e>
+ <e en="T" t="00400550" n="SpecimenSeq"></e>
+ <e en="T" t="00400551" n="SpecimenIdentifier"></e>
  <e en="T" t="00400555" n="AcquisitionContextSeq">@remove()</e>
  <e en="F" t="00400556" n="AcquisitionContextDescription"></e>
  <e en="F" t="0040059a" n="SpecimenTypeCodeSeq"></e>
