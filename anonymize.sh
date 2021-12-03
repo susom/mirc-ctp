@@ -25,7 +25,7 @@ while getopts "h?vd" opt; do
         echo "  -v  Verbose output"
         exit 0
         ;;
-    v)  VERBOSE="-Dlog4j.configuration=file:/app/log4j.xml"
+    v)  VERBOSE="-Dlog4j.configuration=file:/app/log4j.properties"
         ;;
     d)  DEBUG="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y"
         echo "Java debugging enabled"
@@ -37,14 +37,14 @@ shift $((OPTIND-1))
 [[ "${1:-}" = "--" ]] && shift
 
 docker run --rm  -e JAVA_TOOL_OPTIONS=${DEBUG} \
-    -p 8000:8000 -v ${PWD}:/data/dicom mirc-ctp java ${VERBOSE} -cp /app/DAT/* org.rsna.dicomanonymizertool.DicomAnonymizerTool -v -n 8 \
+    -p 8000:8000 -v ${PWD}/scripts:/scripts -v ${PWD}:/data/dicom mirc-ctp java ${VERBOSE} -cp /app/DAT/* org.rsna.dicomanonymizertool.DicomAnonymizerTool -v -n 8 \
 	-in /data/dicom/DICOM \
 	-out /data/dicom/DICOM-ANON \
 	-dec \
 	-rec \
-	-f /tmp/stanford-filter.script \
-	-da /tmp/stanford-anonymizer.script \
-	-dpa /tmp/stanford-scrubber.script \
+	-f /scripts/stanford-filter.script \
+	-da /scripts/stanford-anonymizer.script \
+	-dpa /scripts/stanford-scrubber.script \
 	-pPATIENTID "$PATIENTID" \
 	-pJITTER "$JITTER" \
 	-pACCESSION "$ACCESSION"
