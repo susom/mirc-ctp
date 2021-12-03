@@ -15,7 +15,8 @@
 	<property name="installer" value="org/rsna/installer"/>
 	<property name="dicomanonymizertool" value="org/rsna/dicomanonymizertool"/>
 
-	<property name="ctp" value="/Development/CTP"/>
+	<!-- This points to submodule CTP: https://github.com/johnperry/CTP -->
+	<property name="ctp" value="CTP"/>
 
 	<property name="title" value="DicomAnonymizerTool"/>
 	<property name="copyright" value="Copyright 2017 Radiological Society of North America"/>
