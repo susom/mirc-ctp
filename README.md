@@ -22,7 +22,7 @@ A DICOM tag reference can be found [here](https://dicom.innolitics.com/ciods/cr-
 
 ### Requirements
 
-Since we run this tool on MacOS, it requires docker (see below)
+Since we run this tool on macOS, it requires docker (see below). Although we use macOS, community users have also reported running it successfully on Ubuntu Linux (but you must ensure you are using JDK v.8 and JRE v.8: on Ubuntu use `update-alternatives` to select your Java version).
 
 ### Installation
 
