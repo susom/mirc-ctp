@@ -1,6 +1,8 @@
 [submodule "DicomAnonymizerTool"]
 	path = DicomAnonymizerTool
-	url = https://github.com/johnperry/DicomAnonymizerTool.git
+	url = https://github.com/stanfordmed/DicomAnonymizerTool.git
+	branch = stanford
 [submodule "CTP"]
 	path = CTP
-	url = https://github.com/johnperry/CTP
+	url = https://github.com/stanfordmed/CTP.git
+	branch = stanford
