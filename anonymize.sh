@@ -37,9 +37,10 @@ shift $((OPTIND-1))
 [[ "${1:-}" = "--" ]] && shift
 
 docker run --rm  -e JAVA_TOOL_OPTIONS=${DEBUG} \
-    -p 8000:8000 -v ${PWD}/scripts:/scripts -v ${PWD}:/data/dicom mirc-ctp java ${VERBOSE} -cp /app/DAT/* org.rsna.dicomanonymizertool.DicomAnonymizerTool -v -n 8 \
+    -p 8000:8000 -v ${PWD}/scripts:/scripts -v ${PWD}:/data/dicom starr-radio-kit java ${VERBOSE} -cp /app/DAT/* org.rsna.dicomanonymizertool.DicomAnonymizerTool -v -n 8 \
 	-in /data/dicom/DICOM \
 	-out /data/dicom/DICOM-ANON \
+    -outPattern \
 	-dec \
 	-rec \
 	-f /scripts/stanford-filter.script \

@@ -1,0 +1,10 @@
+steps:
+  # Docker Build
+  - name: "gcr.io/cloud-builders/docker:20.10.14"
+    args: ["build", "--build-arg", "PYPI_USERNAME=${_PYPI_USERNAME}", "--build-arg", "PYPI_PASSWORD=${_PYPI_PASSWORD}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:1.0.0${_SUFFIX}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:${SHORT_SHA}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:${BUILD_ID}", "."]
+
+  # Docker push to Google Artifact Registry
+  - name: "gcr.io/cloud-builders/docker:20.10.14"
+    args: ["push", "-a", "${_ARTIFACT_REGISTRY_REPO}/wdl-kit"]
+
+logsBucket: "gs://cloud-build-dev.starr-data.us"
