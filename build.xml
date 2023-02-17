@@ -5,7 +5,7 @@
 
 	<property name="build" value="${toolbasedir}/build"/>
 	<property name="products" value="DAT"/>
-	<property name="libraries" value="${toolbasedir}/libraries"/>
+	<property name="libraries" value="${toolbasedir}/libraries/libraries"/>
 	<property name="documentation" value="${toolbasedir}/documentation"/>
 
 	<property name="toolsource" value="${toolbasedir}/source"/>
