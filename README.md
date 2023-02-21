@@ -39,48 +39,65 @@ If you do not have the `ant` program installed, install it with [HomeBrew](https
 $ brew install ant
 ```
 
-Compile the included DicomAnonymizerTool by typing `ant` at the command prompt:
+Update the included CTP and DicomAnonymizerTool modules, compile and build a docker image by typing `make` at the command prompt:
 
 ```
-$ ant
-Buildfile: /Users/jdoe/Projects/mirc-ctp/build.xml
+$ make
+git submodule update --init --recursive
+# This one brings the changes to local
+git submodule update --remote --merge
+cd CTP
+git fetch
+cd ..
+cd DicomAnonymizerTool
+git fetch
+cd ..
+make -C CTP
+make[1]: Entering directory '<parent-folder>/mirc-ctp/CTP'
+ant
+Buildfile: <parent-folder>/mirc-ctp/CTP/build.xml
 
 clean:
+   [delete] Deleting directory <parent-folder>/mirc-ctp/CTP/build
+   [delete] Deleting directory <parent-folder>/mirc-ctp/CTP/documentation
+.
+.
+BUILD SUCCESSFUL
+Total time: 14 seconds
+make[1]: Leaving directory '<parent-folder>/mirc-ctp/CTP'
+ant
+Buildfile: /<parent-folder>/mirc-ctp/build.xml
+
+clean:
+   [delete] Deleting directory <parent-folder>/mirc-ctp/DicomAnonymizerTool/build
+   [delete] Deleting directory <parent-folder>/mirc-ctp/DicomAnonymizerTool/documentation
 
 init:
-     [echo] Time now 15:56:40 PST
-     [echo] ant.java.version = 1.8
-    [mkdir] Created dir: /Users/jdoe/Projects/mirc-ctp/DicomAnonymizerTool/build
-...
-
+     [echo] Time now 17:20:35 UTC
+.
+.
+BUILD SUCCESSFUL
+Total time: 3 seconds
+docker build -f Dockerfile --pull -t starr-radio-kit:1.0.0 .
+Sending build context to Docker daemon  298.5MB
+Step 1/12 : FROM openjdk:8
+8: Pulling from library/openjdk
+.
+.
+.
+Successfully built 0cb2eecc701d
+Successfully tagged starr-radio-kit:1.0.0
 ```
-
-You should now have a directory called `DAT` which contains the `DicomAnonymizerTool`. You can try running it: 
-
-```
-$ java -jar DAT/DAT.jar
-Usage: java -jar DAT {parameters}
-where:
-  -in {input} specifies the file or directory to be anonymized
-       If {input} is a directory, all files in it and its subdirectories are processed.
-  -out {output} specifies the file or directory in which to store the anonymized file or files.
-...
-```
-
-Now the application needs to be placed in a Docker image. To create the image: 
-
-`docker build -f Dockerfile --pull -t mirc-ctp .` 
 
 You can now place some test DICOM studies in the directory `DICOM` and run the shell script which will anonymize the studies (all to the same anonymous MRN and Accession Number) and place them in `DICOM-ANON`
 
 ```
 $ ./anonymize.sh
 ----
-Thread: pool-1-thread-1: Anonymizing DICOM/1.2.840.4267.32.293501795892579834759834759834759834
-   Anonymized file: DICOM-ANON/1.2.840.4267.32.10027221686667529588514012002002498656
-----
-Thread: pool-1-thread-2: Anonymizing DICOM/1.2.840.4267.32.093248509348509384509384509834059840
-   Anonymized file: DICOM-ANON/1.2.840.4267.32.10134745174550989356450666756661275833
+Thread: pool-1-thread-1: Anonymizing /data/dicom/DICOM/1.3.12.2.1107.5.1.4.0.30000010041913435648400002130.dcm
+   No matching signature found for pixel anonymization.
+   The DICOMAnonymizer returned OK.
+   Anonymized file: /data/dicom/DICOM-ANON/MRN1234-CT-CT ANGIO THORAX-20100409/1_Series 1-2.dcm
 ----
 Elapsed time: 0.634
 ```

@@ -5,11 +5,9 @@ VERSION = 1.0.0
 
 all: clean install docker
 
-docker:
-	docker build -f Dockerfile --pull -t starr-radio:$(VERSION) .
-
-install: 
+clean:
 	git submodule update --init --recursive
+	# This one brings the changes to local
 	git submodule update --remote --merge
 	cd CTP
 	git fetch
@@ -17,8 +15,13 @@ install:
 	cd DicomAnonymizerTool
 	git fetch
 	cd ..
+
+install: 
 	$(MAKE) -C CTP
 	ant
+
+docker:
+	docker build -f Dockerfile --pull -t starr-radio-kit:$(VERSION) .
 
 check: 
 	$(MAKE) -C tests check
