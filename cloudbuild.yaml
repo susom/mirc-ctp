@@ -5,6 +5,6 @@ steps:
 
   # Docker push to Google Artifact Registry
   - name: "gcr.io/cloud-builders/docker:20.10.14"
-    args: ["push", "-a", "${_ARTIFACT_REGISTRY_REPO}/wdl-kit"]
+    args: ["push", "-a", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit"]
 
 logsBucket: "gs://cloud-build-dev.starr-data.us"
