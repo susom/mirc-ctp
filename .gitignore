@@ -59,8 +59,3 @@ local.*
 
 # Emacs backup files
 *~
-DAT/CTP.jar
-DAT/dcm4che.jar
-DAT/log4j.jar
-DAT/pixelmed_codec.jar
-DAT/util.jar
