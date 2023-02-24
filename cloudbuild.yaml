@@ -5,7 +5,7 @@ steps:
 
   # Docker Build
   - name: "gcr.io/cloud-builders/docker:20.10.14"
-    args: ["build", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:1.0.0${_SUFFIX}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:${SHORT_SHA}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:${BUILD_ID}", "."]
+    args: ["build", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:1.1.0${_SUFFIX}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:${SHORT_SHA}", "-t", "${_ARTIFACT_REGISTRY_REPO}/starr-radio-kit:${BUILD_ID}", "."]
 
   # Docker push to Google Artifact Registry
   - name: "gcr.io/cloud-builders/docker:20.10.14"
