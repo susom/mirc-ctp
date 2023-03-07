@@ -52,6 +52,8 @@
 				<include name="log4j.jar"/>
 				<include name="util.jar"/>
 				<include name="pixelmed_codec.jar"/>
+				<include name="imageio/pixelmed_codec.jar"/>
+				<include name="imageio/pixelmed_imageo.jar"/>
 				<include name="dcm4che-imageio-rle-2.0.25.jar"/>
 			</fileset>
 		</copy>
@@ -67,7 +69,7 @@
 		<jar destfile="${products}/DAT.jar">
 			<manifest>
 				<attribute name="Main-Class" value="org.rsna.dicomanonymizertool.DicomAnonymizerTool"/>
-				<attribute name="Class-Path" value="dcm4che.jar log4j.jar CTP.jar util.jar pixelmed_codec.jar dcm4che-imageio-rle-2.0.25.jar"/>
+				<attribute name="Class-Path" value="dcm4che.jar log4j.jar CTP.jar util.jar pixelmed_codec.jar pixelmed_imageio.jar dcm4che-imageio-rle-2.0.25.jar"/>
 			</manifest>
 			<fileset dir="${build}"
 				excludes="${dicomanonymizertool}/Installer**"/>

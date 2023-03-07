@@ -26,6 +26,12 @@ docker:
 check: 
 	$(MAKE) -C tests check
 
+flush:
+	$(info Flushing the WDL run and call AnonymizeDicomImages caches)
+	rm -rf tests/wdl/_LAST 
+	rm -rf tests/wdl/20[2-9][2-9][0-9][0-9][0-9][0-9]_*_*
+	rm -rf ~/.cache/miniwdl/AnonymizeDicomImagesTest/*
+
 all: clean install
 
 	
