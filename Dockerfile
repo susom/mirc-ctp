@@ -1,7 +1,7 @@
 # Dockerfile for running CTP DicomAnonymizerTool with required dependencies
-FROM openjdk:8
+FROM eclipse-temurin:8
 
-ENV HOME /app
+ENV HOME=/app
 
 WORKDIR /app
 ADD DAT /app/DAT
