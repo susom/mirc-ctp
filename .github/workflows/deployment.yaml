@@ -63,7 +63,7 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: |
-            ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BUILD_ID }}
-            ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/${{ env.IMAGE }}:${{ github.sha }}
-            ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BRANCH_NAME }}
-            ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/${{ env.IMAGE }}:latest
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BUILD_ID }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ github.sha }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BRANCH_NAME }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:latest
