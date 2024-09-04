@@ -8,8 +8,9 @@ on:
 jobs:
   deployment:
     runs-on: ubuntu-latest
-    environment: ${{ vars.GITHUB_REF_NAME }}
-    concurrency: ${{ vars.GITHUB_REF_NAME }}
+    environment: 
+      name: ${{ github.ref_name }}
+    concurrency: ${{ github.ref_name }}
 
     env:
       REGISTRY: ${{ vars.REGISTRY }}
