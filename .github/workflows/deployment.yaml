@@ -1,0 +1,70 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - development
+      - main
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ github.ref_name }}
+    concurrency: ${{ github.ref_name }}
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    env:
+      IMAGE: mirc-ctp
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.WORKLOAD_IDENTITY_PROJECT }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '>= 363.0.0'
+
+      - name: Configure docker for Google artifact registry
+        id: docker
+        run: |
+          gcloud auth configure-docker ${{ vars.REGISTRY }}
+          branch=${GITHUB_REF##*/}
+          ts=$(date +%Y%m%d%H%M%S)
+          echo "BUILD_ID=${branch}-${ts}" >> $GITHUB_OUTPUT
+          echo "BRANCH_NAME=${branch}" >> $GITHUB_OUTPUT
+
+      - name: Setup buildx so we can use GHA caching
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Run make
+        run: make install
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: |
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BUILD_ID }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ github.sha }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BRANCH_NAME }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:latest
