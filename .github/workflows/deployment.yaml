@@ -12,10 +12,6 @@ jobs:
       name: ${{ github.ref_name }}
     concurrency: ${{ github.ref_name }}
 
-    env:
-      REGISTRY: ${{ vars.REGISTRY }}
-      IMAGE: ${{ secrets.REPOSITORY }}/mirc-ctp
-
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -38,7 +34,7 @@ jobs:
       - name: Configure docker for Google artifact registry
         id: docker
         run: |
-          gcloud auth configure-docker ${{ env.REGISTRY }}
+          gcloud auth configure-docker ${{ vars.REGISTRY }}
           branch=${GITHUB_REF##*/}
           ts=$(date +%Y%m%d%H%M%S)
           echo "BUILD_ID=${branch}-${ts}" >> $GITHUB_OUTPUT
@@ -64,7 +60,7 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BUILD_ID }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BRANCH_NAME }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest
+            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:${{ steps.docker.outputs.BUILD_ID }}
+            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:${{ steps.docker.outputs.BRANCH_NAME }}
+            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:latest
