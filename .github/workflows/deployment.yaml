@@ -21,7 +21,10 @@ jobs:
       id-token: 'write'
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
@@ -45,6 +48,15 @@ jobs:
 
       - name: Setup buildx so we can use GHA caching
         uses: docker/setup-buildx-action@v3
+
+      - name: Setup Java
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Run make
+        run: make install
 
       - name: Build and push image
         uses: docker/build-push-action@v6
