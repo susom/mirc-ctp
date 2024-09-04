@@ -16,6 +16,9 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
+    env:
+      IMAGE: mirc-ctp
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,7 +63,7 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:${{ steps.docker.outputs.BUILD_ID }}
-            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:${{ steps.docker.outputs.BRANCH_NAME }}
-            ${{ env.REGISTRY }}/${{ secrets.REPOSITORY }}/mirc-ctp:latest
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BUILD_ID }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ github.sha }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:${{ steps.docker.outputs.BRANCH_NAME }}
+            ${{ vars.REGISTRY }}/${{ secrets.REPOSITORY }}/${{ env.IMAGE }}:latest
