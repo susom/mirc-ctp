@@ -1,28 +1,14 @@
 TARGET = install
-VERSION = 1.0.0
+VERSION = latest
 
-.PHONY: clean
-
-all: clean install docker
+all: submodule docker deinit
 
 docker:
-	docker build -f Dockerfile --pull -t starr-radio:$(VERSION) .
+	docker build -f Dockerfile --pull -t stanford-mirc-ctp:$(VERSION) .
 
-install: 
+submodule: 
 	git submodule update --init --recursive
 	git submodule update --remote --merge
-	cd CTP
-	git fetch
-	cd ..
-	cd DicomAnonymizerTool
-	git fetch
-	cd ..
-	$(MAKE) -C CTP
-	ant
 
-check: 
-	$(MAKE) -C tests check
-
-all: clean install
-
-	
+deinit:
+	git submodule deinit -f .
