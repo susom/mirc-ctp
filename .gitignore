@@ -65,3 +65,5 @@ DAT/dcm4che.jar
 DAT/log4j.jar
 DAT/pixelmed_codec.jar
 DAT/util.jar
+DICOM/
+DICOM-ANON/
