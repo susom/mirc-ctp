@@ -23,11 +23,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
       
       - name: Update submodules
-        run: git submodule update --remote --merge
+        run: |
+        	git submodule update --init --recursive
+          git submodule update --remote --merge
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
