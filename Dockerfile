@@ -1,17 +1,36 @@
 # Dockerfile for running CTP DicomAnonymizerTool with required dependencies
-FROM eclipse-temurin:8
+FROM eclipse-temurin:17-jdk AS build
 
-ENV HOME=/app
+ENV ANT_VERSION=1.10.15
+ENV ANT_HOME=/opt/ant
 
-WORKDIR /app
-ADD DAT /app/DAT
-ADD lib /app/lib
-ADD DicomAnonymizerTool/source/files/log4j.properties /app
+# change to tmp folder
+WORKDIR /tmp
 
-WORKDIR /opt/java/openjdk
-RUN chmod +x /app/lib/*.bin
-RUN echo yes | /app/lib/jai-1_1_3-lib-linux-amd64-jdk.bin
-RUN echo yes | /app/lib/jai_imageio-1_1-lib-linux-amd64-jdk.bin 
+# Download and extract apache ant to opt folder
+RUN wget --no-check-certificate --no-cookies http://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
+    && wget --no-check-certificate --no-cookies http://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz.sha512 \
+    && echo "$(cat apache-ant-${ANT_VERSION}-bin.tar.gz.sha512) apache-ant-${ANT_VERSION}-bin.tar.gz" | sha512sum -c \
+    && tar -zvxf apache-ant-${ANT_VERSION}-bin.tar.gz -C /opt/ \
+    && ln -s /opt/apache-ant-${ANT_VERSION} /opt/ant \
+    && rm -f apache-ant-${ANT_VERSION}-bin.tar.gz \
+    && rm -f apache-ant-${ANT_VERSION}-bin.tar.gz.sha512
 
-WORKDIR /app
-CMD ["java","-cp","/app/DAT/*","org.rsna.dicomanonymizertool.DicomAnonymizerTool"]
+# add executables to path
+RUN update-alternatives --install "/usr/bin/ant" "ant" "/opt/ant/bin/ant" 1 && \
+    update-alternatives --set "ant" "/opt/ant/bin/ant" 
+
+# Build CTP & DicomAnonymizerTool
+COPY CTP/ /build/CTP/
+COPY DicomAnonymizerTool/ /build/DicomAnonymizerTool/
+WORKDIR /build/CTP
+RUN ant
+WORKDIR /build/DicomAnonymizerTool
+RUN ant
+
+# Install
+FROM eclipse-temurin:17 AS dat
+COPY --from=build /build/DicomAnonymizerTool/build/DicomAnonymizerTool/ /opt/DAT/
+WORKDIR /opt/DAT
+ENV CLASSPATH=/opt/DAT/DAT.jar:/opt/DAT/imageio/*:/opt/DAT/libraries/*
+CMD ["java","org.rsna.dicomanonymizertool.DicomAnonymizerTool"]
