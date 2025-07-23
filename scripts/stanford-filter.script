@@ -57,6 +57,33 @@
      )
    )
   )
+   
+  // GE SIGNA
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
+    * [0018,1018].startsWithIgnoreCase("Volume Viewer")
+    * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1")
+    * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
+  )
+
+  // GE Discovery 
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("Discovery"))
+    * ([0018,1018].startsWithIgnoreCase("Volume Viewer")+[1018,1018].startsWithIgnoreCase("Xeleris 4"))
+    * ([0018,1020].startsWithIgnoreCase("5") 
+      +[0018,1020].startsWithIgnoreCase("4")
+      +[0018,1020].startsWithIgnoreCase("pet_columbia"))
+    *(
+       (Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("512")) 
+      +(Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("256"))
+      +(Rows.containsIgnoreCase("256") * Columns.containsIgnoreCase("256"))
+      +(Rows.containsIgnoreCase("1024") * Columns.containsIgnoreCase("1024"))
+      +(Rows.containsIgnoreCase("1878") * Columns.containsIgnoreCase("835"))
+      +(Rows.containsIgnoreCase("541") * Columns.containsIgnoreCase("328"))
+     )
+  )
  
   // MIMvista standalone -- No scrubbing needed
   +((Manufacturer.equalsIgnoreCase("MIMvista Corp") * Modality.equals("CT"))
@@ -107,6 +134,38 @@
       (Rows.equals("192") * Columns.equals("192"))
      +(Rows.equals("512") * Columns.equals("512"))
     ) 
+  )
+
+  // GE MEDICAL SYSTEMS, NUCLEAR - Xeleris 4 -- NM
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
+    * (Modality.equalsIgnoreCase("NM"))
+    * [0018,1018].startsWithIgnoreCase("Xeleris 4")
+    * (
+        (Rows.containsIgnoreCase("541") * Columns.containsIgnoreCase("328"))
+        + (Rows.containsIgnoreCase("552") * Columns.containsIgnoreCase("547"))
+        + (Rows.containsIgnoreCase("540") * Columns.containsIgnoreCase("409"))
+        + (Rows.containsIgnoreCase("1092") * Columns.containsIgnoreCase("409"))
+        + (Rows.containsIgnoreCase("192") * Columns.containsIgnoreCase("128"))
+        + (Rows.containsIgnoreCase("536") * Columns.containsIgnoreCase("328"))
+        + (Rows.containsIgnoreCase("339") * Columns.containsIgnoreCase("328"))
+    )
+  )
+
+  // GE MEDICAL SYSTEMS, NUCLEAR - Stargate_StarGuide -- NM
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
+    * (Modality.equalsIgnoreCase("NM"))
+    * [0008,1090].equalsIgnoreCase("Stargate_StarGuide")
+    * ((Rows.containsIgnoreCase("192") * Columns.containsIgnoreCase("128")))
+  )
+
+  // GE MEDICAL SYSTEMS, NUCLEAR - Xeleris 5 -- NM
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
+    * (Modality.equalsIgnoreCase("NM"))
+    * [0018,1018].startsWithIgnoreCase("Xeleris 5")
+    * (
+        (Rows.containsIgnoreCase("536") * Columns.containsIgnoreCase("328"))
+        + (Rows.containsIgnoreCase("339") * Columns.containsIgnoreCase("328"))
+    )
   )
   
   // Ceretom dose reports do NOT contain PHI pixels and should be anonymized

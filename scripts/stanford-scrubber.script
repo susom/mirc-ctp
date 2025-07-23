@@ -110,6 +110,62 @@ SIEMENS
   (0,0,337,135)
   (338,67,107,16)
 
+GE SIGNA
+{  ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
+    * [0018,1018].startsWithIgnoreCase("Volume Viewer")
+    * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1")
+    * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
+  ) } 
+  (0, 0, 450, 60)
+
+GE Discovery
+{ ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("Discovery"))
+    * ([0018,1018].startsWithIgnoreCase("Volume Viewer") + [1018,1018].startsWithIgnoreCase("Xeleris 4"))
+    * ([0018,1020].startsWithIgnoreCase("5") 
+      +[0018,1020].startsWithIgnoreCase("4")
+      +[0018,1020].startsWithIgnoreCase("pet_columbia"))
+    *(
+       (Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("512")) 
+      +(Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("256"))
+      +(Rows.containsIgnoreCase("256") * Columns.containsIgnoreCase("256"))
+      +(Rows.containsIgnoreCase("1024") * Columns.containsIgnoreCase("1024"))
+      +(Rows.containsIgnoreCase("1878") * Columns.containsIgnoreCase("835"))
+      +(Rows.containsIgnoreCase("541") * Columns.containsIgnoreCase("328"))
+     )
+  ) }
+  (0, 0, 500, 60)
+
+  // GE MEDICAL SYSTEMS, NUCLEAR -- NM
+{ ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
+    * (Modality.equalsIgnoreCase("NM"))
+    * [0018,1018].startsWithIgnoreCase("Xeleris 4")
+    * (
+        (Rows.containsIgnoreCase("541") * Columns.containsIgnoreCase("328"))
+        + (Rows.containsIgnoreCase("552") * Columns.containsIgnoreCase("547"))
+        + (Rows.containsIgnoreCase("540") * Columns.containsIgnoreCase("409"))
+        + (Rows.containsIgnoreCase("1092") * Columns.containsIgnoreCase("409"))
+        + (Rows.containsIgnoreCase("192") * Columns.containsIgnoreCase("128"))
+        + (Rows.containsIgnoreCase("536") * Columns.containsIgnoreCase("328"))
+        + (Rows.containsIgnoreCase("339") * Columns.containsIgnoreCase("328"))
+    )
+  ) }
+  (0, 0, 550, 50)
+
+  // GE MEDICAL SYSTEMS, NUCLEAR - Xeleris 5 -- NM
+ { ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
+    * (Modality.equalsIgnoreCase("NM"))
+    * [0018,1018].startsWithIgnoreCase("Xeleris 5")
+    * (
+        (Rows.containsIgnoreCase("536") * Columns.containsIgnoreCase("328"))
+        + (Rows.containsIgnoreCase("339") * Columns.containsIgnoreCase("328"))
+    )
+  ) }
+  (0, 0, 330, 50)
+
 ***********************
      Ultrasound
 ***********************
