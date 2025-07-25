@@ -139,6 +139,10 @@ GE Discovery
   ) }
   (0, 0, 500, 60)
 
+**************
+     NM
+**************
+
   // GE MEDICAL SYSTEMS, NUCLEAR -- NM
 { ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
     * (Modality.equalsIgnoreCase("NM"))

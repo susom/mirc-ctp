@@ -45,29 +45,7 @@
    *Rows.equalsIgnoreCase("2922") * Columns.equalsIgnoreCase("1936")
   )
 
-
-  // GE CT+PET -- SCRUBBED
-  +((Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS")) * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
-   *(ManufacturerModelName.startsWithIgnoreCase("Discovery") 
-     *[0018,1018].startsWithIgnoreCase("Volume Viewer")
-     *([0018,1020].startsWithIgnoreCase("5") + [0018,1020].startsWithIgnoreCase("4"))
-     *(
-       (Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("512")) 
-      +(Rows.containsIgnoreCase("512") * Columns.containsIgnoreCase("256"))
-     )
-   )
-  )
-   
-  // GE SIGNA
-  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
-    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
-    * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
-    * [0018,1018].startsWithIgnoreCase("Volume Viewer")
-    * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1")
-    * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
-  )
-
-  // GE Discovery 
+  // GE CT+PET Discovery -- SCRUBBED
   +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
     * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
     * (ManufacturerModelName.startsWithIgnoreCase("Discovery"))
@@ -83,6 +61,15 @@
       +(Rows.containsIgnoreCase("1878") * Columns.containsIgnoreCase("835"))
       +(Rows.containsIgnoreCase("541") * Columns.containsIgnoreCase("328"))
      )
+  )
+
+  // GE CT+PET SIGNA
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
+    * [0018,1018].startsWithIgnoreCase("Volume Viewer")
+    * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1")
+    * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
   )
  
   // MIMvista standalone -- No scrubbing needed
