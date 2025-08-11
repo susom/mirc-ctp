@@ -119,6 +119,9 @@ GE SIGNA
     * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
   ) } 
   (0, 0, 450, 60)
+  (300, 60, 450, 95)
+  (0, 425, 450, 500)
+  
 
 GE Discovery
 { ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
@@ -137,7 +140,7 @@ GE Discovery
       +(Rows.containsIgnoreCase("541") * Columns.containsIgnoreCase("328"))
      )
   ) }
-  (0, 0, 500, 60)
+  (0, 0, 500, 80)
 
 **************
      NM
@@ -158,6 +161,7 @@ GE Discovery
     )
   ) }
   (0, 0, 550, 50)
+  (675 505, 780, 535)
 
   // GE MEDICAL SYSTEMS, NUCLEAR - Xeleris 5 -- NM
  { ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
