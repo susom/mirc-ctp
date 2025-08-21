@@ -110,17 +110,29 @@ SIEMENS
   (0,0,337,135)
   (338,67,107,16)
 
-GE SIGNA
+GE SIGNA - SIGNA_LX1.MP1
 {  ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
     * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
     * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
     * [0018,1018].startsWithIgnoreCase("Volume Viewer")
-    * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1")
-    * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
-  ) } 
-  (0, 0, 450, 60)
-  (300, 60, 450, 95)
-  (0, 425, 450, 500)
+    * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1") 
+    * Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456")
+  ) 
+} 
+  (0, 0, 456, 60)
+  (300, 60, 456, 95)
+  (0, 425, 456, 500)
+
+GE SIGNA - SIGNA_LX1.MR30.1_R02_2332.a
+{  ( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
+    * [0018,1018].startsWithIgnoreCase("Volume Viewer")
+    * [0018,1020].containsIgnoreCase("SIGNA_LX1.MR30.1_R02_2332.a") 
+    * Rows.containsIgnoreCase("568") * Columns.containsIgnoreCase("568")
+  ) 
+} 
+  (0, 0, 568, 110)
   
 
 GE Discovery

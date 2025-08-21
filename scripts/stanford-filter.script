@@ -63,13 +63,22 @@
      )
   )
 
-  // GE CT+PET SIGNA
+  // GE CT+PET SIGNA - SIGNA_LX1.MP1
   +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
     * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
     * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
     * [0018,1018].startsWithIgnoreCase("Volume Viewer")
     * [0018,1020].startsWithIgnoreCase("SIGNA_LX1.MP1")
-    * (Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456"))
+    * Rows.containsIgnoreCase("456") * Columns.containsIgnoreCase("456")
+  )
+
+  // GE CT+PET SIGNA - SIGNA_LX1.MR30.1_R02_2332.a
+  +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL") + Manufacturer.startsWithIgnoreCase("GEMS"))
+    * (Modality.equalsIgnoreCase("PT") + Modality.equals("OT") + Modality.equals("CT"))
+    * (ManufacturerModelName.startsWithIgnoreCase("SIGNA PET/MR"))
+    * [0018,1018].startsWithIgnoreCase("Volume Viewer")
+    * [0018,1020].containsIgnoreCase("SIGNA_LX1.MR30.1_R02_2332.a")
+    * Rows.containsIgnoreCase("568") * Columns.containsIgnoreCase("568")
   )
  
   // MIMvista standalone -- No scrubbing needed
@@ -148,7 +157,7 @@
   // GE MEDICAL SYSTEMS, NUCLEAR - Xeleris 5 -- NM
   +( (Manufacturer.startsWithIgnoreCase("GE MEDICAL SYSTEMS, NUCLEAR"))
     * (Modality.equalsIgnoreCase("NM"))
-    * [0018,1018].startsWithIgnoreCase("Xeleris 5")
+    * [0018,1018].containsIgnoreCase("Xeleris 5")
     * (
         (Rows.containsIgnoreCase("536") * Columns.containsIgnoreCase("328"))
         + (Rows.containsIgnoreCase("339") * Columns.containsIgnoreCase("328"))
