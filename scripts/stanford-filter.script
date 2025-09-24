@@ -110,21 +110,41 @@
   )
 
    // Siemens SOMATOM Definition Edge, SOMATOM DEFINITION AS+, SOMATOM FORCE
-  +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
-   *(ImageType.contains("DERIVED"))
-   *
-   (
+  +(
+    Manufacturer.startsWithIgnoreCase("SIEMENS") 
+    *
     (
-        (ManufacturerModelName.containsIgnoreCase("SOMATOM Definition Edge") + ManufacturerModelName.containsIgnoreCase("SOMATOM FORCE")) 
-         * [0018,1020].containsIgnoreCase("syngo CT VB20A")
+        Modality.equalsIgnoreCase("CT") 
+        + 
+        Modality.equals("PT")
     )
+    *
+    (
+        ImageType.contains("DERIVED")
+    )
+    *
+    (
+        (
+            (
+                ManufacturerModelName.containsIgnoreCase("SOMATOM Definition Edge") 
+                + 
+                ManufacturerModelName.containsIgnoreCase("SOMATOM FORCE")
+            ) 
+            * 
+                [0018,1020].containsIgnoreCase("syngo CT VB20A")
+        )
     +
     (
         ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION AS+")
-         * ([0018,1020].containsIgnoreCase("syngo CT VB20A") + [0018,1020].containsIgnoreCase("syngo CT VA48A"))
+        * 
+        (
+            [0018,1020].containsIgnoreCase("syngo CT VB20A") 
+            + 
+            [0018,1020].containsIgnoreCase("syngo CT VA48A")
+        )
     )
    )
-   //*(
+   //*( The row and col are very different everytime, at least row is 512 or col is 512 from all the samples I looked at.
    //   (Rows.equals("679") * Columns.equals("512"))
    //   +(Rows.equals("512") * (Columns.equals("512") + Columns.equals("547") + Columns.equals("605") + Columns.equals("630") + Columns.equals("632") + Columns.equals("682") + Columns.equals("708")))
    //   +(Rows.equals("665") * Columns.equals("512"))
