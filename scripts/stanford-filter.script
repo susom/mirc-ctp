@@ -131,7 +131,7 @@
                 ManufacturerModelName.containsIgnoreCase("SOMATOM FORCE")
             ) 
             * 
-                [0018,1020].containsIgnoreCase("syngo CT VB20A")
+            [0018,1020].containsIgnoreCase("syngo CT VB20A")
         )
     +
     (
