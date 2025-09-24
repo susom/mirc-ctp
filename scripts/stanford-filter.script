@@ -109,58 +109,52 @@
    )
   )
 
-   // Siemens SOMATOM Definition Edge, SOMATOM DEFINITION AS+, SOMATOM FORCE
-  +(
-    Manufacturer.startsWithIgnoreCase("SIEMENS") 
-    *
-    (
-        Modality.equalsIgnoreCase("CT") 
-        + 
-        Modality.equals("PT")
-    )
-    *
-    (
-        ImageType.contains("DERIVED")
-    )
-    *
-    (
-        (
-            (
-                ManufacturerModelName.containsIgnoreCase("SOMATOM Definition Edge") 
-                + 
-                ManufacturerModelName.containsIgnoreCase("SOMATOM FORCE")
-            ) 
-            * 
-            [0018,1020].containsIgnoreCase("syngo CT VB20A")
-        )
-    +
-    (
-        ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION AS+")
-        * 
-        (
-            [0018,1020].containsIgnoreCase("syngo CT VB20A") 
-            + 
-            [0018,1020].containsIgnoreCase("syngo CT VA48A")
-        )
-    )
-   )
-   //*( The row and col are very different everytime, at least row is 512 or col is 512 from all the samples I looked at.
-   //   (Rows.equals("679") * Columns.equals("512"))
-   //   +(Rows.equals("512") * (Columns.equals("512") + Columns.equals("547") + Columns.equals("605") + Columns.equals("630") + Columns.equals("632") + Columns.equals("682") + Columns.equals("708")))
-   //   +(Rows.equals("665") * Columns.equals("512"))
-   //)
+   // Siemens SOMATOM Definition Edge, different resolution
+
+   // Siemens SOMATOM DEFINITION AS+, software version SYNGO CT VA48A, different resolution
+  +( Manufacturer.startsWithIgnoreCase("SIEMENS") 
+    * Modality.equalsIgnoreCase("CT")
+    * ImageType.contains("DERIVED")
+    * ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION AS+") 
+    * SecondaryCaptureDeviceManufacturerModelName.containsIgnoreCase("")
+    * [0018,1020].containsIgnoreCase("SYNGO CT VA48A")
+    * BurnedInAnnotation.equalsIgnoreCase("")
+    * DerivationDescription.equalsIgnoreCase("")
+    * Rows.equals("519") * Columns.equals("512")
+        + Rows.equals("526") * Columns.equals("512")
+        + Rows.equals("587") * Columns.equals("512")
+        + Rows.equals("613") * Columns.equals("512")
+        + Rows.equals("633") * Columns.equals("512")
+        + Rows.equals("665") * Columns.equals("512")
+        + Rows.equals("679") * Columns.equals("512")
+        + Rows.equals("692") * Columns.equals("512")
+        + Rows.equals("722") * Columns.equals("512")
+        + Rows.equals("775") * Columns.equals("512")
+        + Rows.equals("868") * Columns.equals("512")
+        + Rows.equals("512") * Columns.equals("512")
+        + Rows.equals("512") * Columns.equals("532")
+        + Rows.equals("512") * Columns.equals("535")
+        + Rows.equals("512") * Columns.equals("547")
+        + Rows.equals("512") * Columns.equals("565")
+        + Rows.equals("512") * Columns.equals("605")
+        + Rows.equals("512") * Columns.equals("630")
+        + Rows.equals("512") * Columns.equals("632")
+        + Rows.equals("512") * Columns.equals("647")
+        + Rows.equals("512") * Columns.equals("653")
+        + Rows.equals("512") * Columns.equals("682")
+        + Rows.equals("512") * Columns.equals("708")
+        + Rows.equals("512") * Columns.equals("753")
    )
 
-   // Siemens SOMATOM DEFINITION FLASH, version SYNGO CT VB20A
-  +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
-   *(ImageType.contains("DERIVED"))
-   *ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION FLASH") 
-   *[0018,1020].containsIgnoreCase("syngo CT VB20A")
-   *(
-    [0018,1018].containsIgnoreCase("Volume Viewer")
-    +
-    [0018,1018].containsIgnoreCase("")
-    )
+   // Siemens SOMATOM FORCE, different resolution
+
+   // Siemens SOMATOM DEFINITION FLASH, version SYNGO CT VB20A, SCRUBBED
+  +( Manufacturer.startsWithIgnoreCase("SIEMENS") 
+   * Modality.equalsIgnoreCase("CT")
+   * ImageType.contains("DERIVED")
+   * ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION FLASH") 
+   * [0018,1020].containsIgnoreCase("syngo CT VB20A")
+   * ([0018,1018].containsIgnoreCase("Volume Viewer")+[0018,1018].containsIgnoreCase(""))
    )
 
    // Siemens secondary_capture_device_manufacturer AQNET
