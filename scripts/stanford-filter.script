@@ -108,6 +108,64 @@
     +(ManufacturerModelName.containsIgnoreCase("Sensation"))
    )
   )
+
+   // Siemens SOMATOM Definition Edge, SOMATOM DEFINITION AS+, SOMATOM FORCE
+  +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
+   *(ImageType.contains("DERIVED"))
+   *
+   (
+    (
+        (ManufacturerModelName.containsIgnoreCase("SOMATOM Definition Edge") + ManufacturerModelName.containsIgnoreCase("SOMATOM FORCE")) 
+         * [0018,1020].containsIgnoreCase("syngo CT VB20A")
+    )
+    +
+    (
+        ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION AS+")
+         * ([0018,1020].containsIgnoreCase("syngo CT VB20A") + [0018,1020].containsIgnoreCase("syngo CT VA48A"))
+    )
+   )
+   //*(
+   //   (Rows.equals("679") * Columns.equals("512"))
+   //   +(Rows.equals("512") * (Columns.equals("512") + Columns.equals("547") + Columns.equals("605") + Columns.equals("630") + Columns.equals("632") + Columns.equals("682") + Columns.equals("708")))
+   //   +(Rows.equals("665") * Columns.equals("512"))
+   //)
+   )
+
+   // Siemens SOMATOM DEFINITION FLASH, version SYNGO CT VB20A
+  +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
+   *(ImageType.contains("DERIVED"))
+   *ManufacturerModelName.containsIgnoreCase("SOMATOM DEFINITION FLASH") 
+   *[0018,1020].containsIgnoreCase("syngo CT VB20A")
+   *(
+    [0018,1018].containsIgnoreCase("Volume Viewer")
+    +
+    [0018,1018].containsIgnoreCase("")
+    )
+   )
+
+   // Siemens secondary_capture_device_manufacturer AQNET
+  +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
+   *(ImageType.contains("DERIVED"))
+   *(ImageType.contains("AQNET"))
+   *[0018,1018].containsIgnoreCase("AQNET")
+   )
+
+   // Siemens Healthineers manufacturers SYNGO.VIA.VB30A, 
+  +(Manufacturer.startsWithIgnoreCase("Siemens Healthineers") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
+   *(!BurnedInAnnotation.equalsIgnoreCase("YES"))
+   *(ImageType.contains("DERIVED"))
+   *
+    (ManufacturerModelName.containsIgnoreCase("SYNGO.VIA.VB30A"))
+    * [0018,1020].containsIgnoreCase("")
+   )
+
+   // Siemens Healthineers manufacturers SYNGO.VIA.VB60A version VB60A
+  +(Manufacturer.startsWithIgnoreCase("Siemens Healthineers") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
+   *(ImageType.contains("DERIVED"))
+   *
+    (ManufacturerModelName.containsIgnoreCase("SYNGO.VIA.VB60A"))
+    * [0018,1020].containsIgnoreCase("VB60A")
+   )
   
   // Philips PT/CT fusion
   +(Manufacturer.startsWithIgnoreCase("Philips") * Modality.equals("PT") * 
