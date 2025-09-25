@@ -86,27 +86,27 @@
     * Modality.equalsIgnoreCase("CT")
     * ManufacturerModelName.equalsIgnoreCase("REVOLUTION CT")
     * ([0018,1020].equalsIgnoreCase("REVO_CT_22BC.50") + [0018,1020].equalsIgnoreCase("REVO_CT_21B.32"))
-    * Rows.containsIgnoreCase("512") 
+    * Rows.containsIgnoreCase("512")
     * Columns.containsIgnoreCase("512")
   )
 
-   // GE CT DISCOVERY CT750 HD - SLES_HDE.198 - DERIVED 
+   // GE CT DISCOVERY CT750 HD - SLES_HDE.198 - DERIVED
   +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
     * Modality.equalsIgnoreCase("CT")
     * (ImageType.containsIgnoreCase("ORIGINAL"))
     * ManufacturerModelName.equalsIgnoreCase("DISCOVERY CT750 HD")
     * [0018,1020].equalsIgnoreCase("SLES_HDE.198")
-    * Rows.containsIgnoreCase("512") 
+    * Rows.containsIgnoreCase("512")
     * Columns.containsIgnoreCase("512")
   )
 
-  // GE CT LIGHTSPEED VCT - VOLUME VIEWER - DERIVED 
+  // GE CT LIGHTSPEED VCT - VOLUME VIEWER - DERIVED
   +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
     * Modality.equalsIgnoreCase("CT")
     * ManufacturerModelName.equalsIgnoreCase("LIGHTSPEED VCT")
     * [0018,1018].equalsIgnoreCase("VOLUME VIEWER")
     * [0018,1020].equalsIgnoreCase("CORELOAD.118")
-    * Rows.containsIgnoreCase("512") 
+    * Rows.containsIgnoreCase("512")
     * Columns.containsIgnoreCase("512")
   )
  
