@@ -85,7 +85,6 @@
   +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
     * Modality.equalsIgnoreCase("CT")
     * ManufacturerModelName.equalsIgnoreCase("REVOLUTION CT")
-    * [0018,1018].equalsIgnoreCase("")
     * ([0018,1020].equalsIgnoreCase("REVO_CT_22BC.50") + [0018,1020].equalsIgnoreCase("REVO_CT_21B.32"))
     * Rows.containsIgnoreCase("512") 
     * Columns.containsIgnoreCase("512")
