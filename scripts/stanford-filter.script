@@ -104,7 +104,6 @@
   +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
     * Modality.equalsIgnoreCase("CT")
     * ManufacturerModelName.equalsIgnoreCase("LIGHTSPEED VCT")
-    * [0018,1018].equalsIgnoreCase("VOLUME VIEWER")
     * [0018,1020].equalsIgnoreCase("CORELOAD.118")
     * Rows.containsIgnoreCase("512") 
     * Columns.containsIgnoreCase("512")
