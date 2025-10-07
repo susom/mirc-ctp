@@ -1109,7 +1109,7 @@
   +(
     (!Modality.equals("CR") * !Modality.equals("DR") * !Modality.equals("DX")
       *(!ConversionType.equals("")
-        +(!Modality.equals("MR") * ImageType.containsIgnoreCase("DERIVED"))
+        +(!Modality.equals("MR") * !(Manufacturer.startsWithIgnoreCase("Siemens Healthineers") + Manufacturer.startsWithIgnoreCase("SIEMENS")) * ImageType.containsIgnoreCase("DERIVED"))
         +(Modality.equals("MR") * ImageType.containsIgnoreCase("DERIVED") * !ImageType.containsIgnoreCase("DERIVED\PRIMARY"))
         +(Modality.equals("MR") * ImageType.containsIgnoreCase("MRSC"))
         +ImageType.containsIgnoreCase("SECONDARY") 
