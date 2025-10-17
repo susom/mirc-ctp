@@ -94,12 +94,13 @@
    *[0018,1020].equalsIgnoreCase("")
   )
 
-  // Toshiba CT+PT - V6.06ER011
+  // Toshiba CT - V6.06ER011
   +( Manufacturer.equalsIgnoreCase("TOSHIBA")
-    * (Modality.equalsIgnoreCase("PT") + Modality.equals("CT"))
+    * Modality.equals("CT")
     * (ManufacturerModelName.equalsIgnoreCase("AQUILION"))
     * [0018,1020].equalsIgnoreCase("V6.06ER011")
     * ImageType.contains("DERIVED")
+    * ImageType.contains("MPR")
     * ((Rows.equals("512") * Columns.equals("512"))
       +(Rows.equals("520") * Columns.equals("520"))
       +(Rows.equals("528") * Columns.equals("528"))
