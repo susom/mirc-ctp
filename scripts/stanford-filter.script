@@ -93,7 +93,7 @@
    // GE CT DISCOVERY CT750 HD - SLES_HDE.198 - DERIVED
   +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
     * Modality.equalsIgnoreCase("CT")
-    * (ImageType.containsIgnoreCase("ORIGINAL"))
+    * ImageType.containsIgnoreCase("ORIGINAL")
     * ManufacturerModelName.equalsIgnoreCase("DISCOVERY CT750 HD")
     * [0018,1020].equalsIgnoreCase("SLES_HDE.198")
     * Rows.containsIgnoreCase("512")
