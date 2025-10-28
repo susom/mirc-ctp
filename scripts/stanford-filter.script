@@ -80,6 +80,35 @@
     * [0018,1020].containsIgnoreCase("SIGNA_LX1.MR30.1_R02_2332.a")
     * Rows.containsIgnoreCase("568") * Columns.containsIgnoreCase("568")
   )
+
+  // GE CT REVOLUTION CT - REVO_CT_22BC.50 - Has both DERIVED and ORIGINAL ImageType
+  +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
+    * Modality.equalsIgnoreCase("CT")
+    * ManufacturerModelName.equalsIgnoreCase("REVOLUTION CT")
+    * ([0018,1020].equalsIgnoreCase("REVO_CT_22BC.50") + [0018,1020].equalsIgnoreCase("REVO_CT_21B.32"))
+    * Rows.containsIgnoreCase("512")
+    * Columns.containsIgnoreCase("512")
+  )
+
+   // GE CT DISCOVERY CT750 HD - SLES_HDE.198 - DERIVED
+  +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
+    * Modality.equalsIgnoreCase("CT")
+    * ImageType.containsIgnoreCase("ORIGINAL")
+    * ManufacturerModelName.equalsIgnoreCase("DISCOVERY CT750 HD")
+    * [0018,1020].equalsIgnoreCase("SLES_HDE.198")
+    * Rows.containsIgnoreCase("512")
+    * Columns.containsIgnoreCase("512")
+  )
+
+  // GE CT LIGHTSPEED VCT - VOLUME VIEWER - DERIVED
+  +( Manufacturer.equalsIgnoreCase("GE MEDICAL SYSTEMS")
+    * Modality.equalsIgnoreCase("CT")
+    * ManufacturerModelName.equalsIgnoreCase("LIGHTSPEED VCT")
+    * [0018,1018].equalsIgnoreCase("VOLUME VIEWER")
+    * [0018,1020].equalsIgnoreCase("CORELOAD.118")
+    * Rows.containsIgnoreCase("512")
+    * Columns.containsIgnoreCase("512")
+  )
  
   // MIMvista standalone -- No scrubbing needed
   +((Manufacturer.equalsIgnoreCase("MIMvista Corp") * Modality.equals("CT"))
@@ -117,6 +146,30 @@
      +(Rows.equals("664") * Columns.equals("664"))
      )
    )
+   
+  // Toshiba CT - V6.06ER011
+  +( Manufacturer.equalsIgnoreCase("TOSHIBA")
+    * Modality.equals("CT")
+    * (ManufacturerModelName.equalsIgnoreCase("AQUILION"))
+    * [0018,1020].equalsIgnoreCase("V6.06ER011")
+    * ImageType.contains("DERIVED")
+    * ImageType.contains("MPR")
+    * ((Rows.equals("512") * Columns.equals("512"))
+      +(Rows.equals("520") * Columns.equals("520"))
+      +(Rows.equals("528") * Columns.equals("528"))
+      +(Rows.equals("552") * Columns.equals("552"))
+      +(Rows.equals("560") * Columns.equals("560"))
+      +(Rows.equals("568") * Columns.equals("568"))
+      +(Rows.equals("592") * Columns.equals("592"))
+      +(Rows.equals("600") * Columns.equals("600"))
+      +(Rows.equals("600") * Columns.equals("600"))
+      +(Rows.equals("616") * Columns.equals("616"))
+      +(Rows.equals("632") * Columns.equals("632"))
+      +(Rows.equals("640") * Columns.equals("640"))
+      +(Rows.equals("656") * Columns.equals("656"))
+      +(Rows.equals("664") * Columns.equals("664"))
+      )
+  )
 
   // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed but be careful of dose
   +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
@@ -503,8 +556,6 @@
          *((Rows.equals("600") * Columns.equals("800"))
         )
        )
-
-
       )
      )
      
