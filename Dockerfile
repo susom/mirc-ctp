@@ -1,5 +1,5 @@
 # Dockerfile for running CTP DicomAnonymizerTool with required dependencies
-FROM eclipse-temurin:17-jdk AS build
+FROM eclipse-temurin:8-jdk AS build
 
 ENV ANT_VERSION=1.10.15
 ENV ANT_HOME=/opt/ant
@@ -29,8 +29,15 @@ WORKDIR /build/DicomAnonymizerTool
 RUN ant
 
 # Install
-FROM eclipse-temurin:17 AS dat
+FROM eclipse-temurin:8 AS dat
 COPY --from=build /build/DicomAnonymizerTool/build/DicomAnonymizerTool/ /opt/DAT/
+ADD lib* /opt/lib/
+RUN chmod +x /opt/lib/*.bin
+
+WORKDIR /opt/java/openjdk
+RUN echo yes | /opt/lib/jai-1_1_3-lib-linux-amd64-jdk.bin
+RUN echo yes | /opt/lib/jai_imageio-1_1-lib-linux-amd64-jdk.bin
+
 WORKDIR /opt/DAT
 ENV CLASSPATH=/opt/DAT/DAT.jar:/opt/DAT/imageio/*:/opt/DAT/libraries/*
 CMD ["java","org.rsna.dicomanonymizertool.DicomAnonymizerTool"]

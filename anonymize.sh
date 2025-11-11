@@ -36,7 +36,9 @@ done
 shift $((OPTIND-1))
 [[ "${1:-}" = "--" ]] && shift
 
-docker run --rm  -e JAVA_TOOL_OPTIONS=${DEBUG} \
+docker run --rm \
+    --platform linux/amd64 \
+    -e JAVA_TOOL_OPTIONS=${DEBUG} \
     -p 8000:8000 -v ${PWD}/scripts:/scripts -v ${PWD}:/data/dicom stanford-mirc-ctp:latest java ${VERBOSE} org.rsna.dicomanonymizertool.DicomAnonymizerTool -v -n 8 \
 	-in /data/dicom/DICOM \
 	-out /data/dicom/DICOM-ANON \
