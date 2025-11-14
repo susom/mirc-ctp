@@ -146,6 +146,22 @@
       +(Rows.equals("664") * Columns.equals("664"))
       )
   )
+
+  // NEUSOFT CT -- No scrubbing needed and exclude DOSE INFO
+  +( Manufacturer.equalsIgnoreCase("NEUSOFT")
+    * Modality.equals("CT")
+    * [0018,1018].equalsIgnoreCase("NEUVIZ 16")
+    * ImageType.contains("SECONDARY")
+    * ImageType.contains("DERIVED")
+    * ImageType.contains("MPR")
+    * (!ImageType.contains("DOSE_INFO"))
+    * ((Rows.equals("364") * Columns.equals("512"))
+      +(Rows.equals("376") * Columns.equals("512"))
+      +(Rows.equals("388") * Columns.equals("512"))
+      +(Rows.equals("428") * Columns.equals("512"))
+      +(Rows.equals("512") * Columns.equals("512"))
+      )
+  )
   
   // Siemens Biograph 6, Somaris/5 3D, SOMATOM Definition AS -- No scrubbing needed but be careful of dose
   +(Manufacturer.startsWithIgnoreCase("SIEMENS") * (Modality.equalsIgnoreCase("CT") + Modality.equals("PT"))
