@@ -225,6 +225,49 @@
    * [0018,1020].containsIgnoreCase("VB60A")
    )
 
+   // Philips CT - BRILLIANCE 64
+  +( Manufacturer.startsWithIgnoreCase("Philips") 
+   * Modality.equals("CT")
+   * ImageType.contains("DERIVED")
+   * ImageType.contains("SECONDARY")
+   * (ImageType.contains("MPR") + ImageType.contains("MIP"))
+   * ManufacturerModelName.equalsIgnoreCase("BRILLIANCE 64")
+   * [0018,1018].startsWithIgnoreCase("MXVIEW")
+   * ([0018,1020].equalsIgnoreCase("3.6.8"))
+   * (
+      (Rows.equals("512") * Columns.equals("512"))
+    )
+  )
+
+  // Philips CT - VEREOS PET/CT AXIAL
+  +( Manufacturer.startsWithIgnoreCase("Philips") 
+   * Modality.equals("CT")
+   * ImageType.contains("DERIVED")
+   * ImageType.contains("SECONDARY")
+   * (ImageType.contains("AXIAL") + ImageType.contains("MPR"))
+   * ManufacturerModelName.equalsIgnoreCase("VEREOS PET/CT")
+   * ([0018,1020].equalsIgnoreCase("4.1"))
+   * (
+      (Rows.equals("512") * Columns.equals("512"))
+      + (Rows.equals("2142") * Columns.equals("1332"))
+    )
+  )
+
+  // Philips CT - GEMINI TF TOF 16 AXIAL
+  +( Manufacturer.startsWithIgnoreCase("Philips") 
+   * Modality.equals("CT")
+   * ImageType.contains("DERIVED")
+   * ImageType.contains("SECONDARY")
+   * !ImageType.contains("DOSE_INFO")
+   * !BurnedInAnnotation.equalsIgnoreCase('YES')
+   * !DerivationDescription.contains("IMAGE CREATED BY")
+   * ManufacturerModelName.equalsIgnoreCase("GEMINI TF TOF 16")
+   * ([0018,1020].equalsIgnoreCase("2.3.0"))
+   * (
+      (Rows.equals("512") * Columns.equals("512"))
+    )
+  )
+
   // Philips PT/CT fusion
   +(Manufacturer.startsWithIgnoreCase("Philips") * Modality.equals("PT") * 
     ManufacturerModelName.startsWithIgnoreCase("Guardian") *
